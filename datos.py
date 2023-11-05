@@ -1,5 +1,5 @@
 from entities.pilotos import Piloto
-from entities.empleado import Empleado
+from entities.empleados import Empleado
 import datetime
 
 
