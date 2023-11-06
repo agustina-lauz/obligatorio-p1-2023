@@ -1,5 +1,4 @@
-from entities.pilotos import Piloto
-from entities.empleados import Empleado
+
 import datetime
 
 
@@ -27,8 +26,8 @@ class Datos:
             fecha_nacimiento = datetime.datetime.strptime(
                 fecha_nacimiento, '%d/%m/%Y')
             return fecha_nacimiento
-        except ValueError:
-            raise ValueError
+        except ValueError():
+            pass
 
     def set_nacionalidad(self, nacionalidad):
         nacionalidad = input("Ingrese la nacionalidad del empleado: ")
@@ -47,7 +46,8 @@ class Datos:
 
     def set_cargo(self, cargo):
         cargo = input("Ingrese el cargo del empleado: ")
-        if cargo.isalpha():
+        if cargo.isdigit():
+            cargo = int(cargo)
             return cargo
         else:
             raise ValueError
@@ -68,9 +68,24 @@ class Datos:
             raise ValueError
 
     def set_nro_auto(self, nro_auto):
-        nro_auto = input("Ingrese el numero de auto del empleado: ")
+        nro_auto = input("Ingrese el numero de auto del piloto: ")
         if nro_auto.isdigit():
             nro_auto = int(nro_auto)
             return nro_auto
+        else:
+            raise ValueError
+
+    def set_modelo(self, modelo):
+        modelo = input("Ingrese el modelo del auto: ")
+        if modelo.isalpha():
+            return modelo
+        else:
+            raise ValueError
+
+    def set_anio(self, anio):
+        anio = input("Ingrese el año del auto: ")
+        if anio.isdigit():
+            anio = int(anio)
+            return anio
         else:
             raise ValueError
