@@ -93,12 +93,12 @@ class Datos:
         else:
             raise ValueError
 
-    def set_modelo(self, modelo):
+    def set_modelo(self, modelo):                             #modificacion a charlar
         modelo = input("Ingrese el modelo del auto: ")
-        if modelo.isalpha():
+        if modelo is str:
             return modelo
         else:
-            raise TipovalorErroneo("El modelo del auto no deberia contener numeros")
+            raise NoRespetaMetodoDefinido("el modelo no es valido")
 
     def set_anio(self, anio):
         anio = input("Ingrese el año del auto: ")
