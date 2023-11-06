@@ -173,3 +173,7 @@ class Menu():
                 print(
                     'El dato ingresado no se corresponde con ninguna de las opciones, intente nuevamente')
                 continue
+
+if __name__ == "__main__":
+    menu = Menu()
+    menu.inicio()
