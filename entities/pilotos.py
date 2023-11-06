@@ -7,10 +7,10 @@ class Piloto(Empleado):
                          nacionalidad, salario, cargo, equipo)
         self._score = score
         self._nro_auto = nro_auto
-        self._pts_campeonato = None
         self._titular = titular
         self._lesion = lesion
         self._imprevistos = imprevistos
+        self._pts_campeonato = None
 
     @property
     def score(self):
