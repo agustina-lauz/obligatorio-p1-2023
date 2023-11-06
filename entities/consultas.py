@@ -8,7 +8,7 @@ from entities.pilotos import Piloto
 class Consultas:
  
     def top_diez_pilotos(self, equipo):
-        # Top 10 pilotos con más puntos en el campeonato
+        # Top 10 pilotos con más puntos en el campeonato puntaje
         pass
  
     def resumen_campeonato(self, equipo):
@@ -21,7 +21,7 @@ class Consultas:
         pass
  
     def top_tres_pilotos_mas_habilidosos(self, equipo):
-        # Top 3 pilotos más habilidosos
+        # Top 3 pilotos más habilidosos representada x el score personal de cada piloto
         pass
  
     def retornar_jefes_equipo(self, equipo):

@@ -91,9 +91,9 @@ class Datos:
             nro_auto = int(nro_auto)
             return nro_auto
         else:
-            raise ValueError
+            raise TipovalorErroneo("El numero de auto no debe contener letras")
 
-    def set_modelo(self, modelo):                             #modificacion a charlar
+    def set_modelo(self, modelo):                             
         modelo = input("Ingrese el modelo del auto: ")
         if modelo is str:
             return modelo
