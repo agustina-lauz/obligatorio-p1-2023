@@ -47,9 +47,9 @@ class Menu:
 
                         while True:
                             cedula = Datos.set_cedula()
-                            if cedula is None:  # Check if an error occurred
-                                self.inicio() 
-                            if cedula in cedulas_existentes:  # Verificar si la cédula ya existe
+                            if cedula is None:
+                                self.inicio()
+                            if cedula in cedulas_existentes:
                                 print(
                                     "La cédula ingresada ya existe, intente nuevamente")
                                 continue
@@ -58,10 +58,20 @@ class Menu:
                                 break
 
                         fecha_nacimiento = Datos.set_fecha_nacimiento()
+                        if fecha_nacimiento is None:
+                            self.inicio()
                         nacionalidad = Datos.set_nacionalidad()
+                        if nacionalidad is None:
+                            self.inicio()
                         equipo = Datos.set_equipo()
+                        if equipo is None:
+                            self.inicio()
                         salario = Datos.set_salario()
+                        if salario is None:
+                            self.inicio()
                         cargo = Datos.set_cargo()
+                        if cargo is None:
+                            self.inicio()
 
                         if cargo == 0:
                             agregar_jefe = None
@@ -75,10 +85,20 @@ class Menu:
 
                         elif cargo == 1:
                             score = Datos.set_score()
+                            if score is None:
+                                self.inicio()
                             nro_auto = Datos.set_nro_auto()
+                            if nro_auto is None:
+                                self.inicio()
                             titular = Datos.set_titular()
+                            if titular is None:
+                                self.inicio()
                             imprevistos = Datos.set_imprevistos()
+                            if imprevistos is None:
+                                self.inicio()
                             lesion = Datos.set_lesion()
+                            if lesion is None:
+                                self.inicio()
                             piloto = Piloto(nombre, cedula, fecha_nacimiento, nacionalidad, salario,
                                             cargo, equipo, score, nro_auto, titular, imprevistos, lesion)
 
@@ -94,6 +114,8 @@ class Menu:
 
                         elif cargo == 2:
                             score = Datos.set_score()
+                            if score is None:
+                                self.inicio()
                             mecanico = Empleado(
                                 nombre, cedula, fecha_nacimiento, nacionalidad, salario, cargo, equipo)
                             mecanico._score = score
@@ -116,9 +138,17 @@ class Menu:
 
                 try:
                     modelo = Datos.set_modelo()
+                    if modelo is None:
+                        self.inicio()
                     numero = Datos.set_nro_auto()
+                    if numero is None:
+                        self.inicio()
                     anio = Datos.set_anio()
+                    if anio is None:
+                        self.inicio()
                     score = Datos.set_score()
+                    if score is None:
+                        self.inicio()
 
                     auto = Auto(modelo, numero, anio, score)
                     lista_de_autos.append(auto)
