@@ -47,6 +47,8 @@ class Menu:
 
                         while True:
                             cedula = Datos.set_cedula()
+                            if cedula is None:  # Check if an error occurred
+                                self.inicio() 
                             if cedula in cedulas_existentes:  # Verificar si la cédula ya existe
                                 print(
                                     "La cédula ingresada ya existe, intente nuevamente")

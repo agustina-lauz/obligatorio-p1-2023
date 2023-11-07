@@ -1,26 +1,24 @@
 
 import datetime
-from exeptions.tipo_valor_erroneo import TipovalorErroneo
-from exeptions.no_respeta_metodo_definido import NoRespetaMetodoDefinido
+from exceptions.tipo_valor_erroneo import TipovalorErroneo
+from exceptions.no_respeta_metodo_definido import NoRespetaMetodoDefinido
 
 
 class Datos:
-
     def set_cedula():
-        while True:
-            try:
-                cedula = input("Ingrese la cedula del empleado: ")
-                if len(cedula) == 8 and cedula.isdigit():
-                    cedula = int(cedula)
-                    return cedula
+        try:
+            cedula = input("Ingrese la cedula del empleado: ")
+            if len(cedula) == 8 and cedula.isdigit():
+                cedula = int(cedula)
+                return cedula
+            else:
+                if len(cedula) != 8:
+                    print(NoRespetaMetodoDefinido(
+                        "La cedula debe tener 8 digitos"))
                 else:
-                    if len(cedula) != 8:
-                        print(NoRespetaMetodoDefinido(
-                            "La cedula debe tener 8 digitos"))
-                    else:
-                        raise ValueError
-            except ValueError:
-                print(TipovalorErroneo("La cedula no debe contener letras"))
+                    raise ValueError
+        except ValueError:
+            print(TipovalorErroneo("La cedula no debe contener letras"))
 
     def set_nombre():
         while True:
