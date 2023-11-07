@@ -1,7 +1,6 @@
 from entities.pilotos import Piloto
 from datos import Datos
-
-# from entities.auto import Auto
+from entities.auto import Auto
 # from entities.equipos import Equipo
 # from entities.consultas import Consultas
 from entities.empleados import Empleado
@@ -14,7 +13,7 @@ class Menu:
         lista_de_pilotos_titulares = []
         piloto_reserva = None
         equipo_completo = []
-        # lista_de_autos = []
+        lista_de_autos = []
         # lista_de_equipos = []
 
         while True:
@@ -38,11 +37,24 @@ class Menu:
             if num_seleccionado == 1:
                 print("Alta de empleado")
 
+                cedulas_existentes = [
+                    empleado.cedula for empleado in equipo_completo]
+
                 for _ in range(12):
 
                     try:
                         nombre = Datos.set_nombre()
-                        cedula = Datos.set_cedula()
+
+                        while True:
+                            cedula = Datos.set_cedula()
+                            if cedula in cedulas_existentes:  # Verificar si la cédula ya existe
+                                print(
+                                    "La cédula ingresada ya existe, intente nuevamente")
+                                continue
+                            else:
+                                cedulas_existentes.append(cedula)
+                                break
+
                         fecha_nacimiento = Datos.set_fecha_nacimiento()
                         nacionalidad = Datos.set_nacionalidad()
                         equipo = Datos.set_equipo()
@@ -101,7 +113,13 @@ class Menu:
                 print("Alta de auto")
 
                 try:
-                    pass
+                    modelo = Datos.set_modelo()
+                    numero = Datos.set_nro_auto()
+                    anio = Datos.set_anio()
+                    score = Datos.set_score()
+
+                    auto = Auto(modelo, numero, anio, score)
+                    lista_de_autos.append(auto)
 
                 except ValueError:
                     print(

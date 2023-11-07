@@ -12,7 +12,7 @@ class Auto:
         return self._numero
 
     @numero.setter
-    def numero(self, numero):
+    def nro_auto(self, numero):
         self._numero = numero
 
     @property
