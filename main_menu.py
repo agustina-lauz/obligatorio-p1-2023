@@ -11,7 +11,8 @@ class Menu:
     def inicio(self) -> None:
         jefe_equipo = None
         lista_de_mecanicos = []
-        lista_de_piloto = []
+        lista_de_pilotos_titulares = []
+        piloto_reserva = None
         equipo_completo = []
         # lista_de_autos = []
         # lista_de_equipos = []
@@ -37,56 +38,64 @@ class Menu:
             if num_seleccionado == 1:
                 print("Alta de empleado")
 
-                try:
-                    nombre = Datos.set_nombre(self, nombre)
-                    cedula = Datos.set_cedula(self, cedula)
-                    fecha_nacimiento = Datos.set_fecha_nacimiento(self, fecha_nacimiento)
-                    nacionalidad = Datos.set_nacionalidad(self, nacionalidad)
-                    equipo = Datos.set_equipo(self, equipo)
-                    salario = Datos.set_salario(self, salario)
-                    cargo = Datos.set_cargo(self, cargo)
+                for _ in range(12):
 
-                    if cargo == 0:
-                        if agregar_jefe is not None:
-                            print("Este equipo tiene el cupo de jefes completo")
-                        else:
-                            jefe_equipo = Empleado(nombre, cedula, fecha_nacimiento, nacionalidad, salario, cargo, equipo)
-                            agregar_jefe = jefe_equipo
-                            equipo_completo.append(jefe_equipo)
+                    try:
+                        nombre = Datos.set_nombre()
+                        cedula = Datos.set_cedula()
+                        fecha_nacimiento = Datos.set_fecha_nacimiento()
+                        nacionalidad = Datos.set_nacionalidad()
+                        equipo = Datos.set_equipo()
+                        salario = Datos.set_salario()
+                        cargo = Datos.set_cargo()
 
-                    elif cargo == 1:
-                        score = Datos.set_score(self, score)
-                        nro_auto = Datos.set_nro_auto(self, nro_auto)
-                        titular = Datos.set_titular(self, titular)
-                        imprevistos = Datos.set_imprevistos(self, imprevistos)
-                        lesion = Datos.set_lesion(self, lesion)
-                        piloto = Piloto(nombre, cedula, fecha_nacimiento, nacionalidad, salario, cargo, equipo, score, nro_auto, titular, imprevistos, lesion)
-                        
+                        if cargo == 0:
+                            agregar_jefe = None
+                            if agregar_jefe is not None:
+                                print("Este equipo tiene el cupo de jefes completo")
+                            else:
+                                jefe_equipo = Empleado(
+                                    nombre, cedula, fecha_nacimiento, nacionalidad, salario, cargo, equipo)
+                                agregar_jefe = jefe_equipo
+                                equipo_completo.append(jefe_equipo)
 
-                        if len(lista_de_piloto) <= 3:
-                            lista_de_piloto.append(piloto)
-                            equipo_completo.append(piloto)
-                        else:
-                            print("Este equipo tiene el cupo de pilotos completo")
+                        elif cargo == 1:
+                            score = Datos.set_score()
+                            nro_auto = Datos.set_nro_auto()
+                            titular = Datos.set_titular()
+                            imprevistos = Datos.set_imprevistos()
+                            lesion = Datos.set_lesion()
+                            piloto = Piloto(nombre, cedula, fecha_nacimiento, nacionalidad, salario,
+                                            cargo, equipo, score, nro_auto, titular, imprevistos, lesion)
 
-                    elif cargo == 2:
-                        score = Datos.set_score(self, score)
-                        mecanico = Empleado(nombre, cedula, fecha_nacimiento, nacionalidad, salario, cargo, equipo, score)
-                      
+                            if titular and len(lista_de_pilotos_titulares) <= 2:
+                                lista_de_pilotos_titulares.append(piloto)
+                                equipo_completo.append(piloto)
+                            elif not titular and piloto_reserva is None:
+                                piloto_reserva = piloto
+                                equipo_completo.append(piloto_reserva)
+                            else:
+                                print(
+                                    "Este equipo tiene el cupo de pilotos completo")
 
-                        if len(lista_de_mecanicos) <= 8:
-                            lista_de_mecanicos.append(mecanico)
-                            equipo_completo.append(mecanico)
-                        else:
-                            print("Este equipo tiene el cupo de mecanicos completo")
+                        elif cargo == 2:
+                            score = Datos.set_score()
+                            mecanico = Empleado(
+                                nombre, cedula, fecha_nacimiento, nacionalidad, salario, cargo, equipo)
+                            mecanico._score = score
 
-                    pass
+                            if len(lista_de_mecanicos) <= 8:
+                                lista_de_mecanicos.append(mecanico)
+                                equipo_completo.append(mecanico)
+                            else:
+                                print(
+                                    "Este equipo tiene el cupo de mecanicos completo")
 
-                except ValueError:
-                    print(
-                        "Uno o más datos ingresados son inválidos, intente nuevamente"
-                    )
-                    continue
+                    except ValueError:
+                        print(
+                            "Uno o más datos ingresados son inválidos, intente nuevamente"
+                        )
+                        continue
 
             elif num_seleccionado == 2:
                 print("Alta de auto")
@@ -139,8 +148,9 @@ class Menu:
                     if num_seleccionado.isdigit():
                         num_seleccionado = int(num_seleccionado)
                     else:
-                        print("Uno o más datos ingresados son inválidos, intente nuevamente")
-            
+                        print(
+                            "Uno o más datos ingresados son inválidos, intente nuevamente")
+
                         continue
 
                     if num_seleccionado == 1:
@@ -150,8 +160,9 @@ class Menu:
                             pass
 
                         except ValueError:
-                            print("Uno o más datos ingresados son inválidos, intente nuevamente")
-                            
+                            print(
+                                "Uno o más datos ingresados son inválidos, intente nuevamente")
+
                             continue
 
                     elif num_seleccionado == 2:
@@ -161,7 +172,8 @@ class Menu:
                             pass
 
                         except ValueError:
-                            print( "Uno o más datos ingresados son inválidos, intente nuevamente")
+                            print(
+                                "Uno o más datos ingresados son inválidos, intente nuevamente")
                             continue
 
                     elif num_seleccionado == 3:
@@ -171,7 +183,8 @@ class Menu:
                             pass
 
                         except ValueError:
-                            print( "Uno o más datos ingresados son inválidos, intente nuevamente")
+                            print(
+                                "Uno o más datos ingresados son inválidos, intente nuevamente")
                             continue
 
                     elif num_seleccionado == 4:
@@ -181,7 +194,8 @@ class Menu:
                             pass
 
                         except ValueError:
-                            print( "Uno o más datos ingresados son inválidos, intente nuevamente")
+                            print(
+                                "Uno o más datos ingresados son inválidos, intente nuevamente")
                             continue
 
                     elif num_seleccionado == 5:
