@@ -4,6 +4,8 @@ from entities.auto import Auto
 # from entities.equipos import Equipo
 # from entities.consultas import Consultas
 from entities.empleados import Empleado
+from exceptions.valor_ya_existe import ValorYaExiste
+
 
 
 class Menu:
@@ -14,7 +16,8 @@ class Menu:
         piloto_reserva = None
         equipo_completo = []
         lista_de_autos = []
-        # lista_de_equipos = []
+        #lista_de_equipos = []
+       
 
         while True:
             print("Menu principal")
@@ -43,19 +46,23 @@ class Menu:
                 for _ in range(12):
 
                     try:
-                        nombre = Datos.set_nombre()
+                        try:
+                            nombre = Datos.set_nombre()
 
-                        while True:
-                            cedula = Datos.set_cedula()
-                            if cedula is None:
-                                self.inicio()
-                            if cedula in cedulas_existentes:
-                                print(
-                                    "La cédula ingresada ya existe, intente nuevamente")
-                                continue
-                            else:
-                                cedulas_existentes.append(cedula)
-                                break
+                            while True:
+                                cedula = Datos.set_cedula()
+                                if cedula is None:
+                                    self.inicio()
+                                if cedula in cedulas_existentes:   
+                                    print( ValorYaExiste("La cédula ingresada ya existe, intente nuevamente"))
+                                    raise ValorYaExiste("La cédula ingresada ya existe, intente nuevamente")
+                                else:
+                                    cedulas_existentes.append(cedula)
+                                    break
+                        except ValorYaExiste:
+                            self.inicio()
+                            break
+
 
                         fecha_nacimiento = Datos.set_fecha_nacimiento()
                         if fecha_nacimiento is None:
