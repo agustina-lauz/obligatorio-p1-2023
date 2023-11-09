@@ -7,17 +7,18 @@ from entities.empleados import Empleado
 from exceptions.valor_ya_existe import ValorYaExiste
 
 
-
 class Menu:
+
+    def __init__(self) -> None:
+        self._jefe_equipo = None
+        self._lista_de_mecanicos = []
+        self._lista_de_pilotos_titulares = []
+        self._piloto_reserva = None
+        self._equipo_completo = []
+        self._lista_de_autos = []
+        self._lista_de_equipos = []
+
     def inicio(self) -> None:
-        jefe_equipo = None
-        lista_de_mecanicos = []
-        lista_de_pilotos_titulares = []
-        piloto_reserva = None
-        equipo_completo = []
-        lista_de_autos = []
-        #lista_de_equipos = []
-       
 
         while True:
             print("Menu principal")
@@ -41,104 +42,103 @@ class Menu:
                 print("Alta de empleado")
 
                 cedulas_existentes = [
-                    empleado.cedula for empleado in equipo_completo]
+                    empleado.cedula for empleado in self._equipo_completo]
 
-                for _ in range(12):
-
+                try:
                     try:
-                        try:
-                            nombre = Datos.set_nombre()
+                        nombre = Datos.set_nombre()
 
-                            while True:
-                                cedula = Datos.set_cedula()
-                                if cedula is None:
-                                    self.inicio()
-                                if cedula in cedulas_existentes:   
-                                    print( ValorYaExiste("La cédula ingresada ya existe, intente nuevamente"))
-                                    raise ValorYaExiste("La cédula ingresada ya existe, intente nuevamente")
-                                else:
-                                    cedulas_existentes.append(cedula)
-                                    break
-                        except ValorYaExiste:
-                            self.inicio()
-                            break
-
-
-                        fecha_nacimiento = Datos.set_fecha_nacimiento()
-                        if fecha_nacimiento is None:
-                            self.inicio()
-                        nacionalidad = Datos.set_nacionalidad()
-                        if nacionalidad is None:
-                            self.inicio()
-                        equipo = Datos.set_equipo()
-                        if equipo is None:
-                            self.inicio()
-                        salario = Datos.set_salario()
-                        if salario is None:
-                            self.inicio()
-                        cargo = Datos.set_cargo()
-                        if cargo is None:
-                            self.inicio()
-
-                        if cargo == 0:
-                            agregar_jefe = None
-                            if agregar_jefe is not None:
-                                print("Este equipo tiene el cupo de jefes completo")
+                        while True:
+                            cedula = Datos.set_cedula()
+                            if cedula is None:
+                                self.inicio()
+                            if cedula in cedulas_existentes:
+                                print(ValorYaExiste(
+                                    "La cédula ingresada ya existe, intente nuevamente"))
+                                raise ValorYaExiste(
+                                    "La cédula ingresada ya existe, intente nuevamente")
                             else:
-                                jefe_equipo = Empleado(
-                                    nombre, cedula, fecha_nacimiento, nacionalidad, salario, cargo, equipo)
-                                agregar_jefe = jefe_equipo
-                                equipo_completo.append(jefe_equipo)
+                                cedulas_existentes.append(cedula)
+                                break
+                    except ValorYaExiste:
+                        self.inicio()
+                        break
 
-                        elif cargo == 1:
-                            score = Datos.set_score()
-                            if score is None:
-                                self.inicio()
-                            nro_auto = Datos.set_nro_auto()
-                            if nro_auto is None:
-                                self.inicio()
-                            titular = Datos.set_titular()
-                            if titular is None:
-                                self.inicio()
-                            imprevistos = Datos.set_imprevistos()
-                            if imprevistos is None:
-                                self.inicio()
-                            lesion = Datos.set_lesion()
-                            if lesion is None:
-                                self.inicio()
-                            piloto = Piloto(nombre, cedula, fecha_nacimiento, nacionalidad, salario,
-                                            cargo, equipo, score, nro_auto, titular, imprevistos, lesion)
+                    fecha_nacimiento = Datos.set_fecha_nacimiento()
+                    if fecha_nacimiento is None:
+                        self.inicio()
+                    nacionalidad = Datos.set_nacionalidad()
+                    if nacionalidad is None:
+                        self.inicio()
+                    equipo = Datos.set_equipo()
+                    if equipo is None:
+                        self.inicio()
+                    salario = Datos.set_salario()
+                    if salario is None:
+                        self.inicio()
+                    cargo = Datos.set_cargo()
+                    if cargo is None:
+                        self.inicio()
 
-                            if titular and len(lista_de_pilotos_titulares) <= 2:
-                                lista_de_pilotos_titulares.append(piloto)
-                                equipo_completo.append(piloto)
-                            elif not titular and piloto_reserva is None:
-                                piloto_reserva = piloto
-                                equipo_completo.append(piloto_reserva)
-                            else:
-                                print(
-                                    "Este equipo tiene el cupo de pilotos completo")
-
-                        elif cargo == 2:
-                            score = Datos.set_score()
-                            if score is None:
-                                self.inicio()
-                            mecanico = Empleado(
+                    if cargo == 0:
+                        agregar_jefe = None
+                        if agregar_jefe is not None:
+                            print("Este equipo tiene el cupo de jefes completo")
+                        else:
+                            jefe_equipo = Empleado(
                                 nombre, cedula, fecha_nacimiento, nacionalidad, salario, cargo, equipo)
-                            mecanico._score = score
+                            agregar_jefe = jefe_equipo
+                            self._equipo_completo.append(jefe_equipo)
 
-                            if len(lista_de_mecanicos) <= 8:
-                                lista_de_mecanicos.append(mecanico)
-                                equipo_completo.append(mecanico)
-                            else:
-                                print(
-                                    "Este equipo tiene el cupo de mecanicos completo")
+                    elif cargo == 1:
+                        score = Datos.set_score()
+                        if score is None:
+                            self.inicio()
+                        nro_auto = Datos.set_nro_auto()
+                        if nro_auto is None:
+                            self.inicio()
+                        titular = Datos.set_titular()
+                        if titular is None:
+                            self.inicio()
+                        imprevistos = Datos.set_imprevistos()
+                        if imprevistos is None:
+                            self.inicio()
+                        lesion = Datos.set_lesion()
+                        if lesion is None:
+                            self.inicio()
+                        piloto = Piloto(nombre, cedula, fecha_nacimiento, nacionalidad, salario,
+                                        cargo, equipo, score, nro_auto, titular, imprevistos, lesion)
 
-                    except ValueError:
-                        print(
-                            "Uno o más datos ingresados son inválidos, intente nuevamente"
-                        )
-                        continue
+                        if titular and len(self._lista_de_pilotos_titulares) <= 2:
+                            self._lista_de_pilotos_titulares.append(piloto)
+                            self._equipo_completo.append(piloto)
+                        elif not titular and piloto_reserva is None:
+                            piloto_reserva = piloto
+                            self._equipo_completo.append(piloto_reserva)
+                        else:
+                            print(
+                                "Este equipo tiene el cupo de pilotos completo")
+
+                    elif cargo == 2:
+                        score = Datos.set_score()
+                        if score is None:
+                            self.inicio()
+                        mecanico = Empleado(
+                            nombre, cedula, fecha_nacimiento, nacionalidad, salario, cargo, equipo)
+                        mecanico._score = score
+
+                        if len(self._lista_de_mecanicos) <= 8:
+                            self._lista_de_mecanicos.append(mecanico)
+                            self._equipo_completo.append(mecanico)
+                        else:
+                            print(
+                                "Este equipo tiene el cupo de mecanicos completo")
+
+                except ValueError:
+                    print(
+                        "Uno o más datos ingresados son inválidos, intente nuevamente"
+                    )
+                    continue
 
             elif num_seleccionado == 2:
                 print("Alta de auto")
@@ -158,7 +158,7 @@ class Menu:
                         self.inicio()
 
                     auto = Auto(modelo, numero, anio, score)
-                    lista_de_autos.append(auto)
+                    self._lista_de_autos.append(auto)
 
                 except ValueError:
                     print(
