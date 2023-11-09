@@ -112,14 +112,9 @@ class Datos:
                 print(TipovalorErroneo("El numero de auto no debe contener letras"))
 
     def set_modelo():
-        try:
-            modelo = input("Ingrese el modelo del auto: ")
-            if modelo.isalpha():
-                return modelo
-            else:
-                raise ValueError
-        except:
-            print(NoRespetaMetodoDefinido("el modelo no es valido"))
+        modelo = input("Ingrese el modelo del auto: ")
+        return modelo
+  
 
     def set_anio():
         try:
