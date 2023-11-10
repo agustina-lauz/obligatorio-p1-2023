@@ -56,7 +56,7 @@ class Menu:
 
                 try:
                     nombre = Datos.set_nombre()
-                    if  nombre is None:
+                    if nombre is None:
                         self.inicio()
 
                     try:
@@ -223,40 +223,30 @@ class Menu:
 
                     empleados = []
                     for _ in range(12):
-                        cedula_colaboradores= int(input(
-                            "Ingrese la cédula del empleado: "))
-                        
-                        empleados = []
-                        for _ in range(12):
-                            cedula_colaborador = int(input("Ingrese la cédula del empleado: "))
-                            
-                            empleado_encontrado = next(
-                                (empleado for empleado in self._equipo_completo if empleado.cedula == cedula_colaborador), None)
+                        cedula_colaborador = int(
+                            input("Ingrese la cédula del empleado: "))
 
-                            if empleado_encontrado and empleado_encontrado.equipo == nombre_equipo:
-                                empleados.append(empleado_encontrado)
-                            else:
-                                print("El empleado no pertenece al equipo o su cédula no está registrada para ese equipo.")
-                                self.inicio()
+                        empleado_encontrado = next(
+                            (empleado for empleado in self._equipo_completo if empleado.cedula == cedula_colaborador), None)
 
-                            nuevo_equipo = {'nombre': nombre_equipo, 'modelo_auto': modelo_auto, 'empleados': empleados}
-                            self._equipos.append(nuevo_equipo)
+                        if empleado_encontrado is None:
+                            print("La cédula no está registrada en el sistema.")
+                            self.inicio()
+                        elif empleado_encontrado.equipo != nombre_equipo:
+                            print(
+                                "El empleado no pertenece al equipo que estás intentando crear.")
+                            self.inicio()
+                        else:
+                            empleados.append(empleado_encontrado)
+
+                        nuevo_equipo = {
+                            'nombre': nombre_equipo, 'modelo_auto': modelo_auto, 'empleados': empleados}
+                        self._equipos.append(nuevo_equipo)
 
                 except ValueError:
-                    print("Uno o más datos ingresados son inválidos, intente nuevamente")
+                    print(
+                        "Uno o más datos ingresados son inválidos, intente nuevamente")
                     continue
-                                        
-                        
-
-                #     self._equipos[nombre_equipo] = {
-                #         'auto': modelo_auto, 'empleados': empleados}
-                #     print(f"Equipo {nombre_equipo} creado exitosamente.")
-
-                # except ValueError:
-                #     print(
-                #         "Uno o más datos ingresados son inválidos, intente nuevamente"
-                #     )
-                #     continue
 
  # TERMINA ALTA DE EQUIPO
 
