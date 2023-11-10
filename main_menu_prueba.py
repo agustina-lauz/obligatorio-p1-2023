@@ -117,14 +117,14 @@ class Menu:
                         titular = Datos.set_titular()
                         if titular is None:
                             self.inicio()
-                        imprevistos = Datos.set_imprevistos()
-                        if imprevistos is None:
-                            self.inicio()
-                        lesion = Datos.set_lesion()
-                        if lesion is None:
-                            self.inicio()
+                        # imprevistos = Datos.set_imprevistos()
+                        # if imprevistos is None:
+                        #     self.inicio()
+                        # lesion = Datos.set_lesion()
+                        # if lesion is None:
+                        #     self.inicio()
                         piloto = Piloto(cedula, nombre, fecha_nacimiento, nacionalidad, salario,
-                                        cargo, equipo, score, nro_auto, titular, imprevistos, lesion)
+                                        cargo, equipo, score, nro_auto, titular)
                         try:
                             if len(self._lista_de_pilotos_titulares) >= 2 and titular:
                                 print(ValorYaExiste(

@@ -41,7 +41,7 @@ En esta carpeta es donde se encuentra el sector de prueba del programa, el cual 
 Y por dos carpetas:
 1. Entities: en esta carpeta se encuentran las respectivas clases que hay que usar para ejecutar el programa (auto.py, consultas.py, empleados.py, equipos.py, imprevistos.py, pilotos.py).
 
-2. Exeptions: en esta carpeta se encuentran los archivos correspondientes a los posibles errores a encontrar al ejecutar el programa (no_respeta_metodo_definido.py, tipo_valor_erroneo.py).
+2. Exeptions: en esta carpeta se encuentran los archivos correspondientes a los posibles errores a encontrar al ejecutar el programa (no_respeta_metodo_definido.py, tipo_valor_erroneo.py, valor_ya_existe.py).
 
 
 ## Problemas conocidos

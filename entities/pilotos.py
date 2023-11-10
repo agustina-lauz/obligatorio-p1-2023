@@ -2,14 +2,14 @@ from entities.empleados import Empleado
 
 
 class Piloto(Empleado):
-    def __init__(self, cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo, equipo, score, nro_auto, titular, imprevistos, lesion=False):
+    def __init__(self, cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo, equipo, score, nro_auto, titular):
         super().__init__(cedula, nombre, fecha_nacimiento,
                          nacionalidad, salario, cargo, equipo)
         self._score = score
         self._nro_auto = nro_auto
         self._titular = titular
-        self._lesion = lesion
-        self._imprevistos = imprevistos
+        self._lesion = None
+        self._imprevistos =None
         self._pts_campeonato = None
 
     @property
