@@ -22,10 +22,10 @@ class Menu:
         # self._lista_de_mecanicos = []
         self._lista_de_pilotos_titulares = []
         self._piloto_reserva = None
-        # self._equipo_completo = []
+        self._equipo_completo = []
         self._lista_de_autos = []
         self._equipos = []
-        self.empleados_por_equipo_y_cargo = defaultdict(
+        self.cant_empleados_equipo = defaultdict(
             lambda: defaultdict(list))
         self.cedulas_empleados = set()
         self._asignaciones_auto_piloto = {}
@@ -56,6 +56,8 @@ class Menu:
 
                 try:
                     nombre = Datos.set_nombre()
+                    if  nombre is None:
+                        self.inicio()
 
                     try:
                         cedula = Datos.set_cedula()
@@ -87,7 +89,7 @@ class Menu:
                         self.inicio()
 
                     try:
-                        if len(self.empleados_por_equipo_y_cargo[equipo][cargo]) >= limites_cargo[cargo]:
+                        if len(self.cant_empleados_equipo[equipo][cargo]) >= limites_cargo[cargo]:
                             raise ValorYaExiste(
                                 "El cupo de empleados para ese cargo y equipo se encuentra completo")
 
@@ -103,9 +105,10 @@ class Menu:
                         else:
                             jefe_equipo = Empleado(
                                 cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo, equipo)
-                            self.empleados_por_equipo_y_cargo[equipo][cargo].append(
+                            self.cant_empleados_equipo[equipo][cargo].append(
                                 jefe_equipo)
                             self.cedulas_empleados.add(cedula)
+                            self._equipo_completo.append(jefe_equipo)
 
                     elif cargo == 1:
                         score = Datos.set_score()
@@ -132,9 +135,10 @@ class Menu:
                                 self.inicio()
                             elif len(self._lista_de_pilotos_titulares) <= 2 and titular:
                                 self._lista_de_pilotos_titulares.append(piloto)
-                                self.empleados_por_equipo_y_cargo[equipo][cargo].append(
+                                self.cant_empleados_equipo[equipo][cargo].append(
                                     piloto)
                                 self.cedulas_empleados.add(cedula)
+                                self._equipo_completo.append(piloto)
 
                             else:
                                 if self._piloto_reserva is not None:
@@ -143,9 +147,10 @@ class Menu:
                                     self.inicio()
                                 else:
                                     self._piloto_reserva = piloto
-                                    self.empleados_por_equipo_y_cargo[equipo][cargo].append(
+                                    self.cant_empleados_equipo[equipo][cargo].append(
                                         piloto)
                                     self.cedulas_empleados.add(cedula)
+                                    self._equipo_completo.append(piloto)
 
                         except ValorYaExiste:
                             print(ValorYaExiste(
@@ -160,9 +165,10 @@ class Menu:
                             cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo, equipo)
                         mecanico.score = score
 
-                        self.empleados_por_equipo_y_cargo[equipo][cargo].append(
+                        self.cant_empleados_equipo[equipo][cargo].append(
                             mecanico)
                         self.cedulas_empleados.add(cedula)
+                        self._equipo_completo.append(mecanico)
 
                 except ValueError:
                     print(
@@ -217,24 +223,40 @@ class Menu:
 
                     empleados = []
                     for _ in range(12):
-                        cedula_empleado = input(
-                            "Ingrese la cédula del empleado: ")
-                        if cedula_empleado not in self.cedulas_empleados:
-                            print(
-                                "El empleado no está registrado en el sistema.")
-                            self.inicio()
-                        else:
-                            empleados.append(cedula_empleado)
+                        cedula_colaboradores= int(input(
+                            "Ingrese la cédula del empleado: "))
+                        
+                        empleados = []
+                        for _ in range(12):
+                            cedula_colaborador = int(input("Ingrese la cédula del empleado: "))
+                            
+                            empleado_encontrado = next(
+                                (empleado for empleado in self._equipo_completo if empleado.cedula == cedula_colaborador), None)
 
-                    self._equipos[nombre_equipo] = {
-                        'auto': modelo_auto, 'empleados': empleados}
-                    print(f"Equipo {nombre_equipo} creado exitosamente.")
+                            if empleado_encontrado and empleado_encontrado.equipo == nombre_equipo:
+                                empleados.append(empleado_encontrado)
+                            else:
+                                print("El empleado no pertenece al equipo o su cédula no está registrada para ese equipo.")
+                                self.inicio()
+
+                            nuevo_equipo = {'nombre': nombre_equipo, 'modelo_auto': modelo_auto, 'empleados': empleados}
+                            self._equipos.append(nuevo_equipo)
 
                 except ValueError:
-                    print(
-                        "Uno o más datos ingresados son inválidos, intente nuevamente"
-                    )
+                    print("Uno o más datos ingresados son inválidos, intente nuevamente")
                     continue
+                                        
+                        
+
+                #     self._equipos[nombre_equipo] = {
+                #         'auto': modelo_auto, 'empleados': empleados}
+                #     print(f"Equipo {nombre_equipo} creado exitosamente.")
+
+                # except ValueError:
+                #     print(
+                #         "Uno o más datos ingresados son inválidos, intente nuevamente"
+                #     )
+                #     continue
 
  # TERMINA ALTA DE EQUIPO
 
