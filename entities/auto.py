@@ -38,9 +38,3 @@ class Auto:
     @score.setter
     def score(self, score):
         self._score = score
-
-    def __str__(self):
-        return f'Numero: {self._numero}, Modelo: {self._modelo}, Año: {self._anio}, Score: {self._score}'
-
-    def __repr__(self):
-        return str(self)

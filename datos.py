@@ -5,6 +5,7 @@ from exceptions.no_respeta_metodo_definido import NoRespetaMetodoDefinido
 
 
 class Datos:
+
     def set_cedula():
         try:
             cedula = input("Ingrese la cedula del empleado: ")
@@ -108,13 +109,12 @@ class Datos:
             try:
                 nro_auto = int(input("Ingrese el numero de auto del piloto: "))
                 return nro_auto
-            except:
+            except ValueError:
                 print(TipovalorErroneo("El numero de auto no debe contener letras"))
 
     def set_modelo():
         modelo = input("Ingrese el modelo del auto: ")
         return modelo
-  
 
     def set_anio():
         try:
@@ -147,22 +147,62 @@ class Datos:
             print(TipovalorErroneo(
                 "El valor del titular no debe contener letras"))
 
-    def set_imprevistos():
-        try:
-            imprevistos = input("Ingrese los imprevistos del auto: ")
-            if imprevistos.replace(" ", "").isalpha():
-                return imprevistos
-            else:
-                raise ValueError
-        except ValueError:
-            print(TipovalorErroneo("Los imprevistos no deben contener numeros"))
+    def pilotos_lesionados():
+        pilotos_lesionados = []
+        lesionados = input(
+            "Ingrese la cedula de los pilotos lesionados (separados por coma): ").split(",")
+        lesionados = [int(i) for i in lesionados]
+        pilotos_lesionados.extend(lesionados)
+        return pilotos_lesionados
 
-    def set_lesion():
-        try:
-            lesion = input("Ingrese la lesion del piloto: ")
-            if lesion.replace(" ", "").isalpha():
-                return lesion
-            else:
-                raise ValueError
-        except ValueError:
-            print(TipovalorErroneo("La lesion no debe contener numeros"))
+    def pilotos_abandonan():
+        pilotos_abandonan = []
+        abandonan = input(
+            "Ingrese la cedula de los pilotos que abandonan (separados por coma): ").split(",")
+        abandonan = [int(i) for i in abandonan]
+        pilotos_abandonan.extend(abandonan)
+        return pilotos_abandonan
+
+    def pilotos_infraccionan():
+        lista_infracciones = []
+
+        while True:
+            try:
+                cedula_infracciones = int(input(
+                    "Ingrese cédula del piloto que tiene infracciones (o ingrese una cédula vacía para salir): "))
+
+                if not cedula_infracciones:
+                    break
+
+                cantidad_infracciones = int(
+                    input("Ingrese la cantidad de infracciones: "))
+            except ValueError:
+                print("Error: Ingrese una cédula y cantidad válidas (números enteros).")
+                continue
+
+            lista_infracciones.append(
+                (cedula_infracciones, cantidad_infracciones))
+
+        return lista_infracciones
+
+    def pilotos_errores_pits():
+
+        lista_errores_pits = []
+
+        while True:
+            cedula_errores_pits = input(
+                "Ingrese cédula del piloto con errores en pits (o ingrese una cédula vacía para salir): ")
+            if not cedula_errores_pits:
+                break
+
+            try:
+                cantidad_errores_pits = int(
+                    input("Ingrese la cantidad de errores en pits: "))
+            except ValueError:
+                print("Error: Ingrese una cantidad válida (número entero).")
+                continue
+
+            lista_errores_pits.append(
+                (cedula_errores_pits, cantidad_errores_pits))
+
+        return lista_errores_pits

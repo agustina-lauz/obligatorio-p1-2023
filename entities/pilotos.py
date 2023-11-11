@@ -9,7 +9,9 @@ class Piloto(Empleado):
         self._nro_auto = nro_auto
         self._titular = titular
         self._lesion = None
-        self._imprevistos =None
+        self._cant_infracciones = None
+        self._abandono = None
+        self._errores_pits = None
         self._pts_campeonato = None
 
     @property
@@ -53,9 +55,9 @@ class Piloto(Empleado):
         self._lesion = lesion
 
     @property
-    def imprevistos(self):
-        return self._imprevistos
+    def cant_infracciones(self):
+        return self._cant_infracciones
 
-    @imprevistos.setter
-    def imprevistos(self, imprevistos):
-        self._imprevistos = imprevistos
+    @cant_infracciones.setter
+    def imprevistos(self, cant_infracciones):
+        self._cant_infracciones = cant_infracciones

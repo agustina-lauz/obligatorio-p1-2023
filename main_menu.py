@@ -120,12 +120,6 @@ class Menu:
                         titular = Datos.set_titular()
                         if titular is None:
                             self.inicio()
-                        # imprevistos = Datos.set_imprevistos()
-                        # if imprevistos is None:
-                        #     self.inicio()
-                        # lesion = Datos.set_lesion()
-                        # if lesion is None:
-                        #     self.inicio()
                         piloto = Piloto(cedula, nombre, fecha_nacimiento, nacionalidad, salario,
                                         cargo, equipo, score, nro_auto, titular)
                         try:
@@ -255,7 +249,36 @@ class Menu:
                 print("Simular carrera")
 
                 try:
-                    pass
+                    pilotos_ordenados = sorted(
+                        self._lista_de_pilotos_titulares, key=lambda piloto: piloto.score, reverse=True)
+                    if self._piloto_reserva is not None:
+                        pilotos_ordenados.append(self._piloto_reserva)
+
+                    pilotos_lesionados = Datos.pilotos_lesionados()
+                    for piloto in pilotos_ordenados:
+                        if piloto.cedula in pilotos_lesionados:
+                            piloto.lesion = True
+
+                    pilotos_abandonan = Datos.pilotos_abandonan()
+                    for piloto in pilotos_ordenados:
+                        if piloto.cedula in pilotos_abandonan:
+                            piloto.abandono = True
+                            piloto.pts_campeonato = 0
+
+                    pilotos_infraccionan = Datos.pilotos_infraccionan()
+                    for piloto in pilotos_ordenados:
+                        if piloto.cedula == pilotos_infraccionan[0]:
+                            piloto.cant_infracciones = pilotos_infraccionan[1]
+
+                    pilotos_errores_pits = Datos.pilotos_errores_pits()
+                    for piloto in pilotos_ordenados:
+                        if piloto.cedula == pilotos_errores_pits[0]:
+                            piloto.errores_pits = pilotos_errores_pits[1]
+
+                    pilotos_en_carrera = []
+                    for piloto in pilotos_ordenados:
+                        if not piloto.lesion and not piloto.abandono:
+                            pilotos_en_carrera.append(piloto)
 
                 except ValueError:
                     print(
