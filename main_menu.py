@@ -19,7 +19,7 @@ class Menu:
 
     def __init__(self) -> None:
         self._jefe_equipo = None
-        # self._lista_de_mecanicos = []
+        self._lista_de_mecanicos = []
         self._lista_de_pilotos_titulares = []
         self._piloto_reserva = None
         self._equipo_completo = []
@@ -163,6 +163,7 @@ class Menu:
                             mecanico)
                         self.cedulas_empleados.add(cedula)
                         self._equipo_completo.append(mecanico)
+                        self._lista_de_mecanicos.append(mecanico)
 
                 except ValueError:
                     print(
@@ -312,7 +313,13 @@ class Menu:
                         print("Top 10 pilotos con más puntos en el campeonato")
 
                         try:
-                            pass
+
+                            pilotos_ordenados = sorted(
+                                pilotos_en_carrera, key=lambda piloto: piloto.score_final, reverse=True)
+
+                            for i, piloto in enumerate(pilotos_ordenados[:10], start=1):
+                                print(
+                                    f"{i}. {piloto.nombre} - {piloto.score_final} pts")
 
                         except ValueError:
                             print(
@@ -332,10 +339,16 @@ class Menu:
                             continue
 
                     elif num_seleccionado == 3:
-                        print("Top 5 pilotos mejores pago")
+                        print("Top 5 pilotos mejores pagados")
 
                         try:
-                            pass
+
+                            pilotos_ordenados = sorted(
+                                self._equipo_completo, key=lambda piloto: piloto.salario, reverse=True)
+
+                            for i, piloto in enumerate(pilotos_ordenados[:5], start=1):
+                                print(
+                                    f"{i}. {piloto.nombre} - Salario: {piloto.salario}")
 
                         except ValueError:
                             print(
@@ -346,7 +359,12 @@ class Menu:
                         print("Top 3 pilotos más habilidosos")
 
                         try:
-                            pass
+                            pilotos_ordenados = sorted(
+                                pilotos_en_carrera, key=lambda piloto: piloto.score, reverse=True)
+
+                            for i, piloto in enumerate(pilotos_ordenados[:3], start=1):
+                                print(
+                                    f"{i}. {piloto.nombre} - {piloto.scorel} pts")
 
                         except ValueError:
                             print(
@@ -357,12 +375,26 @@ class Menu:
                         print("Retornar jefes de equipo")
 
                         try:
-                            pass
+
+                            jefes_de_equipo = [
+                                empleado for empleado in self._equipo_completo if empleado.cargo == 0]
+
+                            if jefes_de_equipo:
+                                for jefe_equipo in jefes_de_equipo:
+                                    equipo_asignado = next(
+                                        (equipo['nombre'] for equipo in self._equipos if jefe_equipo in equipo['empleados']), None)
+                                    if equipo_asignado is not None:
+                                        print(
+                                            f"Jefe de equipo: {jefe_equipo.nombre}, Equipo: {equipo_asignado}")
+                                    else:
+                                        print(
+                                            f"Jefe de equipo: {jefe_equipo.nombre}, Sin equipo asignado")
+                            else:
+                                print("No hay jefes de equipo en el sistema.")
 
                         except ValueError:
                             print(
-                                "Uno o más datos ingresados son inválidos, intente nuevamente"
-                            )
+                                "Uno o más datos ingresados son inválidos, intente nuevamente")
                             continue
 
                 except ValueError:
