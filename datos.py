@@ -2,6 +2,7 @@
 import datetime
 from exceptions.tipo_valor_erroneo import TipovalorErroneo
 from exceptions.no_respeta_metodo_definido import NoRespetaMetodoDefinido
+from exceptions.valor_no_existe import ValorNoExiste
 
 
 class Datos:
@@ -148,20 +149,43 @@ class Datos:
                 "El valor del titular no debe contener letras"))
 
     def pilotos_lesionados():
-        pilotos_lesionados = []
-        lesionados = input(
-            "Ingrese la cedula de los pilotos lesionados (separados por coma): ").split(",")
-        lesionados = [int(i) for i in lesionados]
-        pilotos_lesionados.extend(lesionados)
-        return pilotos_lesionados
+        while True:
+            try:
+                pilotos_lesionados = []
+                lesionados = input(
+                    "Ingrese la cedula de el piloto lesionado: ")
+                print("si existen mas pilotos lesionados ingrese su cedula, sino ingrese 0")
+                lesionados = [int(i) for i in lesionados]
+                if lesionados is not None:
+                    pilotos_lesionados.extend(lesionados)
+                    return pilotos_lesionados
+                elif lesionados == 0:
+                    break
+                else:
+                    raise ValorNoExiste
+            except ValorNoExiste:
+                print(NoRespetaMetodoDefinido(
+                    "No se ingresaron pilotos lesionados"))
 
+                
     def pilotos_abandonan():
-        pilotos_abandonan = []
-        abandonan = input(
-            "Ingrese la cedula de los pilotos que abandonan (separados por coma): ").split(",")
-        abandonan = [int(i) for i in abandonan]
-        pilotos_abandonan.extend(abandonan)
-        return pilotos_abandonan
+        while True:
+            try: 
+                pilotos_abandonan = []
+                abandonan = input(
+                    "Ingrese la cedula de el piloto que abandono la carrera: ")
+                print("si existen mas pilotos que abandonaron ingrese su cedula, sino ingrese 0")
+                abandonan = [int(i) for i in abandonan]
+                if abandonan is not None:
+                    pilotos_abandonan.extend(abandonan)
+                    return pilotos_abandonan
+                elif abandonan == 0:
+                    break
+                else: 
+                    raise ValorNoExiste
+            except ValorNoExiste:  
+                print(NoRespetaMetodoDefinido(
+                    "No se ingresaron pilotos que abandonan"))
 
     def pilotos_infraccionan():
         lista_infracciones = []
@@ -172,12 +196,15 @@ class Datos:
                     "Ingrese cédula del piloto que tiene infracciones (o ingrese una cédula vacía para salir): "))
 
                 if not cedula_infracciones:
+                    print(ValorNoExiste(" No se ingreso cedula de piloto"))
                     break
-
-                cantidad_infracciones = int(
+                else:
+                    cantidad_infracciones = int(
                     input("Ingrese la cantidad de infracciones: "))
-            except ValueError:
-                print("Error: Ingrese una cédula y cantidad válidas (números enteros).")
+                    if cantidad_infracciones is None:
+                        raise ValorNoExiste
+            except ValorNoExiste:
+                print(ValorNoExiste("Error: Ingrese una cédula y cantidad válidas (números enteros)."))
                 continue
 
             lista_infracciones.append(
@@ -190,16 +217,21 @@ class Datos:
         lista_errores_pits = []
 
         while True:
-            cedula_errores_pits = input(
-                "Ingrese cédula del piloto con errores en pits (o ingrese una cédula vacía para salir): ")
-            if not cedula_errores_pits:
-                break
-
             try:
-                cantidad_errores_pits = int(
-                    input("Ingrese la cantidad de errores en pits: "))
-            except ValueError:
-                print("Error: Ingrese una cantidad válida (número entero).")
+                cedula_errores_pits = input(
+                    "Ingrese cédula del piloto con errores en pits (o ingrese una cédula vacía para salir): ")
+                
+                if not cedula_errores_pits:
+                    print(ValorNoExiste(" No se ingreso cedula de piloto"))
+                    break
+
+                else:
+                    cantidad_errores_pits = int(
+                        input("Ingrese la cantidad de errores en pits: "))
+                    if cantidad_errores_pits is None:
+                        raise ValorNoExiste
+            except ValorNoExiste:
+                print(ValorNoExiste("Error: Ingrese una cantidad válida (número entero)."))
                 continue
 
             lista_errores_pits.append(

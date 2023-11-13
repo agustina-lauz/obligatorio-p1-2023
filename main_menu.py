@@ -1,11 +1,14 @@
 from collections import defaultdict
 from datos import Datos
 from entities.auto import Auto
-# from entities.consultas import Consultas
 from entities.empleados import Empleado
 # from entities.equipos import Equipo
 from entities.pilotos import Piloto
 from exceptions.valor_ya_existe import ValorYaExiste
+from exceptions.no_respeta_metodo_definido import NoRespetaMetodoDefinido
+from exceptions.valor_no_existe import ValorNoExiste
+from entities.consultas import Consultas 
+
 
 
 limites_cargo = {
@@ -169,7 +172,7 @@ class Menu:
                     print(
                         "Uno o más datos ingresados son inválidos, intente nuevamente"
                     )
-                    continue
+                    self.inicio()
  # TERMINA ALTA DE EMPLEADO
 
  # COMIENZA ALTA DE AUTO
@@ -198,7 +201,7 @@ class Menu:
                     print(
                         "Uno o más datos ingresados son inválidos, intente nuevamente"
                     )
-                    continue
+                    self.inicio()
 
  # TERMINA ALTA DE AUTO
 
@@ -241,7 +244,7 @@ class Menu:
                 except ValueError:
                     print(
                         "Uno o más datos ingresados son inválidos, intente nuevamente")
-                    continue
+                    self.inicio()
 
  # TERMINA ALTA DE EQUIPO
 
@@ -249,43 +252,67 @@ class Menu:
             elif num_seleccionado == 4:
                 print("Simular carrera")
 
+                if len(self._equipo_completo) < 12:
+                    print(NoRespetaMetodoDefinido(
+                        "No se puede simular una carrera sin un equipo completo."))
+                    self.inicio()
+                else:
+                    continue
+                
                 try:
                     pilotos_ordenados = sorted(
                         self._lista_de_pilotos_titulares, key=lambda piloto: piloto.score, reverse=True)
                     if self._piloto_reserva is not None:
-                        pilotos_ordenados.append(self._piloto_reserva)
+                        pilotos_ordenados.extend(self._piloto_reserva)
+                        pilotos_ordenados = sorted(
+                            pilotos_ordenados, key=lambda piloto: piloto.score, reverse=True)
 
                     pilotos_lesionados = Datos.pilotos_lesionados()
-                    for piloto in pilotos_ordenados:
-                        if piloto.cedula in pilotos_lesionados:
-                            piloto.lesion = True
+                    for pilotos in pilotos_ordenados:
+                        if pilotos.cedula == pilotos_lesionados.cedula:
+                            pilotos.lesion = True
+                        else:
+                            print(ValorNoExiste("Piloto no encontrado"))
+                            self.inicio()
+
 
                     pilotos_abandonan = Datos.pilotos_abandonan()
-                    for piloto in pilotos_ordenados:
-                        if piloto.cedula in pilotos_abandonan:
-                            piloto.abandono = True
-                            piloto.pts_campeonato = 0
+                    for pilotos in pilotos_ordenados:
+                        if pilotos.cedula == pilotos_abandonan.cedula:
+                            pilotos.abandono = True
+                            pilotos.score_final = 0
+                        else:
+                            print(ValorNoExiste("Piloto no encontrado"))
+                            self.inicio()
+
+
 
                     pilotos_infraccionan = Datos.pilotos_infraccionan()
                     for piloto in pilotos_ordenados:
                         if piloto.cedula == pilotos_infraccionan[0]:
                             piloto.cant_infracciones = pilotos_infraccionan[1]
+                        else:
+                            self.inicio()
 
                     pilotos_errores_pits = Datos.pilotos_errores_pits()
                     for piloto in pilotos_ordenados:
                         if piloto.cedula == pilotos_errores_pits[0]:
                             piloto.errores_pits = pilotos_errores_pits[1]
+                        else:
+                            self.inicio()
 
                     pilotos_en_carrera = []
                     for piloto in pilotos_ordenados:
                         if not piloto.lesion and not piloto.abandono:
                             pilotos_en_carrera.append(piloto)
+                        else:
+                            self.inicio() 
 
                 except ValueError:
                     print(
                         "Uno o más datos ingresados son inválidos, intente nuevamente"
                     )
-                    continue
+                    self.inicio()
  # TERMINA SIMULAR CARRERA
 
  # COMIENZA REALIZAR CONSULTAS
@@ -312,20 +339,10 @@ class Menu:
                     if num_seleccionado == 1:
                         print("Top 10 pilotos con más puntos en el campeonato")
 
-                        try:
-
-                            pilotos_ordenados = sorted(
-                                pilotos_en_carrera, key=lambda piloto: piloto.score_final, reverse=True)
-
-                            for i, piloto in enumerate(pilotos_ordenados[:10], start=1):
-                                print(
-                                    f"{i}. {piloto.nombre} - {piloto.score_final} pts")
-
-                        except ValueError:
-                            print(
-                                "Uno o más datos ingresados son inválidos, intente nuevamente")
-
-                            continue
+                        top_diez_pilotos = Consultas.top_diez_pilotos(pilotos_en_carrera)
+                        if top_diez_pilotos is None:
+                            print("No hay pilotos registrados en el sistema.")
+                            self.inicio()
 
                     elif num_seleccionado == 2:
                         print("Resumen campeonato de constructores (equipos)")
@@ -341,79 +358,56 @@ class Menu:
                     elif num_seleccionado == 3:
                         print("Top 5 pilotos mejores pagados")
 
-                        try:
-
-                            pilotos_ordenados = sorted(
-                                self._equipo_completo, key=lambda piloto: piloto.salario, reverse=True)
-
-                            for i, piloto in enumerate(pilotos_ordenados[:5], start=1):
-                                print(
-                                    f"{i}. {piloto.nombre} - Salario: {piloto.salario}")
-
-                        except ValueError:
-                            print(
-                                "Uno o más datos ingresados son inválidos, intente nuevamente")
-                            continue
+                        top_cinco_pilotos_mejores_pagos = Consultas.top_cinco_pilotos_mejores_pagos( self._equipo_completo)
+                        if top_cinco_pilotos_mejores_pagos is None: 
+                            print("No hay pilotos registrados en el sistema.")
+                            self.inicio()
 
                     elif num_seleccionado == 4:
                         print("Top 3 pilotos más habilidosos")
 
-                        try:
-                            pilotos_ordenados = sorted(
-                                pilotos_en_carrera, key=lambda piloto: piloto.score, reverse=True)
-
-                            for i, piloto in enumerate(pilotos_ordenados[:3], start=1):
-                                print(
-                                    f"{i}. {piloto.nombre} - {piloto.scorel} pts")
-
-                        except ValueError:
-                            print(
-                                "Uno o más datos ingresados son inválidos, intente nuevamente")
-                            continue
+                        top_tres_pilotos_mas_habilidosos = Consultas.top_tres_pilotos_mas_habilidosos(pilotos_en_carrera)
+                        if top_tres_pilotos_mas_habilidosos is None:
+                            print("No hay pilotos registrados en el sistema.")
+                            self.inicio()
 
                     elif num_seleccionado == 5:
                         print("Retornar jefes de equipo")
 
-                        try:
-
-                            jefes_de_equipo = [
-                                empleado for empleado in self._equipo_completo if empleado.cargo == 0]
-
-                            if jefes_de_equipo:
-                                for jefe_equipo in jefes_de_equipo:
-                                    equipo_asignado = next(
-                                        (equipo['nombre'] for equipo in self._equipos if jefe_equipo in equipo['empleados']), None)
-                                    if equipo_asignado is not None:
-                                        print(
-                                            f"Jefe de equipo: {jefe_equipo.nombre}, Equipo: {equipo_asignado}")
-                                    else:
-                                        print(
-                                            f"Jefe de equipo: {jefe_equipo.nombre}, Sin equipo asignado")
-                            else:
-                                print("No hay jefes de equipo en el sistema.")
-
-                        except ValueError:
-                            print(
-                                "Uno o más datos ingresados son inválidos, intente nuevamente")
-                            continue
+                        retornar_jefes_equipo = Consultas.retornar_jefes_equipo(self._equipo_completo)
+                        if retornar_jefes_equipo is None:
+                            print("No hay jefes de equipo registrados en el sistema.")
+                            self.inicio()          
 
                 except ValueError:
                     print(
                         "El dato ingresado no se corresponde con ninguna de las opciones, intente nuevamente"
                     )
-                    continue
+                    self.inicio() 
  # TERMINA REALIZAR CONSULTAS
 
  # COMIENZA FINALIZAR PROGRAMA
             elif num_seleccionado == 6:
-                print("Programa finalizado")
+                print("El programa ha finalizado correctamente")
+
+                self._jefe_equipo = None
+                self._lista_de_mecanicos.clear()
+                self._lista_de_pilotos_titulares.clear()
+                self._piloto_reserva = None
+                self._equipo_completo.clear()
+                self._lista_de_autos.clear()
+                self._equipos.clear()
+                self.cant_empleados_equipo.clear()
+                self.cedulas_empleados.clear()
+                self._asignaciones_auto_piloto.clear()
+                self.inicio()
                 break
 
             else:
                 print(
                     "El dato ingresado no se corresponde con ninguna de las opciones, intente nuevamente"
                 )
-                continue
+                self.inicio()
  # TERMINA FINALIZAR PROGRAMA
 
 
