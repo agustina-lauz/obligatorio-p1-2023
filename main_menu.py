@@ -400,7 +400,6 @@ class Menu:
                 self.cant_empleados_equipo.clear()
                 self.cedulas_empleados.clear()
                 self._asignaciones_auto_piloto.clear()
-                self.inicio()
                 break
 
             else:
