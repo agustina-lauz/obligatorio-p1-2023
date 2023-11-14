@@ -27,7 +27,7 @@ class Piloto(Empleado):
         return self._nro_auto
 
     @nro_auto.setter
-    def nro_auto(self, nro_auto)
+    def nro_auto(self, nro_auto):
         self._nro_auto = nro_auto
 
     @property
