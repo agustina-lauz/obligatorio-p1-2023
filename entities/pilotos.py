@@ -2,17 +2,17 @@ from entities.empleados import Empleado
 
 
 class Piloto(Empleado):
-    def __init__(self, cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo, equipo, score, nro_auto, titular):
+    def __init__(self, cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo, equipo, score, nro_auto):
         super().__init__(cedula, nombre, fecha_nacimiento,
                          nacionalidad, salario, cargo, equipo)
         self._score = score
         self._nro_auto = nro_auto
-        self._titular = titular
-        self._lesion = None
-        self._cant_infracciones = None
-        self._abandono = None
-        self._errores_pits = None
-        self._score_final = None
+        self._titular = True
+        self._lesion = False
+        self._cant_infracciones = 0
+        self._abandono = False
+        self._errores_pits = 0
+        self._score_final = 0
 
     @property
     def score(self):
@@ -27,7 +27,7 @@ class Piloto(Empleado):
         return self._nro_auto
 
     @nro_auto.setter
-    def nro_auto(self, nro_auto):
+    def nro_auto(self, nro_auto)
         self._nro_auto = nro_auto
 
     @property

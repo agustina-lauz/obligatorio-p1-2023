@@ -7,6 +7,7 @@ from exceptions.valor_no_existe import ValorNoExiste
 
 class Datos:
 
+    @staticmethod
     def set_cedula():
         try:
             cedula = input("Ingrese la cedula del empleado: ")
@@ -22,6 +23,7 @@ class Datos:
         except ValueError:
             print(TipovalorErroneo("La cedula no debe contener letras"))
 
+    @staticmethod
     def set_nombre():
         try:
             nombre = input("Ingrese el nombre del empleado: ")
@@ -32,6 +34,7 @@ class Datos:
         except ValueError:
             print(TipovalorErroneo("El nombre no debe contener numeros"))
 
+    @staticmethod
     def set_fecha_nacimiento():
         try:
             fecha_nacimiento = input(
@@ -46,6 +49,7 @@ class Datos:
             print(NoRespetaMetodoDefinido(
                 "la fecha no fue ingresada de manera correcta"))
 
+    @staticmethod
     def set_nacionalidad():
         try:
             nacionalidad = input("Ingrese la nacionalidad del empleado: ")
@@ -56,6 +60,7 @@ class Datos:
         except ValueError:
             print(TipovalorErroneo("La nacionalidad no debe contener numeros"))
 
+    @staticmethod
     def set_salario():
         try:
             salario = input("Ingrese el salario del empleado: ")
@@ -67,6 +72,7 @@ class Datos:
         except ValueError:
             print(TipovalorErroneo("El salario no debe contener letras"))
 
+    @staticmethod
     def set_cargo():
         try:
             print(
@@ -80,6 +86,7 @@ class Datos:
         except ValueError:
             print(TipovalorErroneo("El cargo no debe contener letras"))
 
+    @staticmethod
     def set_equipo():
         try:
             equipo = input("Ingrese el equipo al que pertenece: ")
@@ -91,6 +98,7 @@ class Datos:
             print(TipovalorErroneo(
                 "El nombre del equipo no debe contener numeros"))
 
+    @staticmethod
     def set_score():
         try:
             score = int(input("Ingrese el score correspondiente: "))
@@ -105,6 +113,7 @@ class Datos:
             print(TipovalorErroneo(
                 "El score debe ser un número entero y no puede contener letras"))
 
+    @staticmethod
     def set_nro_auto():
         while True:
             try:
@@ -113,10 +122,12 @@ class Datos:
             except ValueError:
                 print(TipovalorErroneo("El numero de auto no debe contener letras"))
 
+    @staticmethod
     def set_modelo():
         modelo = input("Ingrese el modelo del auto: ")
         return modelo
 
+    @staticmethod
     def set_anio():
         try:
             anio = int(input("Ingrese el año del auto : "))
@@ -131,6 +142,7 @@ class Datos:
             print(TipovalorErroneo(
                 "El año debe ser un número entero y no debe contener letras"))
 
+    @staticmethod
     def set_titular():
         try:
             titular = int(
@@ -148,13 +160,15 @@ class Datos:
             print(TipovalorErroneo(
                 "El valor del titular no debe contener letras"))
 
+    @staticmethod
     def pilotos_lesionados():
         while True:
             try:
                 pilotos_lesionados = []
                 lesionados = input(
                     "Ingrese la cedula de el piloto lesionado: ")
-                print("si existen mas pilotos lesionados ingrese su cedula, sino ingrese 0")
+                print(
+                    "si existen mas pilotos lesionados ingrese su cedula, sino ingrese 0")
                 lesionados = [int(i) for i in lesionados]
                 if lesionados is not None:
                     pilotos_lesionados.extend(lesionados)
@@ -167,26 +181,28 @@ class Datos:
                 print(NoRespetaMetodoDefinido(
                     "No se ingresaron pilotos lesionados"))
 
-                
+    @staticmethod
     def pilotos_abandonan():
         while True:
-            try: 
+            try:
                 pilotos_abandonan = []
                 abandonan = input(
                     "Ingrese la cedula de el piloto que abandono la carrera: ")
-                print("si existen mas pilotos que abandonaron ingrese su cedula, sino ingrese 0")
+                print(
+                    "si existen mas pilotos que abandonaron ingrese su cedula, sino ingrese 0")
                 abandonan = [int(i) for i in abandonan]
                 if abandonan is not None:
                     pilotos_abandonan.extend(abandonan)
                     return pilotos_abandonan
                 elif abandonan == 0:
                     break
-                else: 
+                else:
                     raise ValorNoExiste
-            except ValorNoExiste:  
+            except ValorNoExiste:
                 print(NoRespetaMetodoDefinido(
                     "No se ingresaron pilotos que abandonan"))
 
+    @staticmethod
     def pilotos_infraccionan():
         lista_infracciones = []
 
@@ -200,11 +216,12 @@ class Datos:
                     break
                 else:
                     cantidad_infracciones = int(
-                    input("Ingrese la cantidad de infracciones: "))
+                        input("Ingrese la cantidad de infracciones: "))
                     if cantidad_infracciones is None:
                         raise ValorNoExiste
             except ValorNoExiste:
-                print(ValorNoExiste("Error: Ingrese una cédula y cantidad válidas (números enteros)."))
+                print(ValorNoExiste(
+                    "Error: Ingrese una cédula y cantidad válidas (números enteros)."))
                 continue
 
             lista_infracciones.append(
@@ -212,6 +229,7 @@ class Datos:
 
         return lista_infracciones
 
+    @staticmethod
     def pilotos_errores_pits():
 
         lista_errores_pits = []
@@ -220,7 +238,7 @@ class Datos:
             try:
                 cedula_errores_pits = input(
                     "Ingrese cédula del piloto con errores en pits (o ingrese una cédula vacía para salir): ")
-                
+
                 if not cedula_errores_pits:
                     print(ValorNoExiste(" No se ingreso cedula de piloto"))
                     break
@@ -231,7 +249,8 @@ class Datos:
                     if cantidad_errores_pits is None:
                         raise ValorNoExiste
             except ValorNoExiste:
-                print(ValorNoExiste("Error: Ingrese una cantidad válida (número entero)."))
+                print(ValorNoExiste(
+                    "Error: Ingrese una cantidad válida (número entero)."))
                 continue
 
             lista_errores_pits.append(
