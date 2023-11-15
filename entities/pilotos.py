@@ -2,9 +2,9 @@ from entities.empleados import Empleado
 
 
 class Piloto(Empleado):
-    def __init__(self, cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo, equipo, score, nro_auto):
+    def __init__(self, cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo, score, nro_auto):
         super().__init__(cedula, nombre, fecha_nacimiento,
-                         nacionalidad, salario, cargo, equipo)
+                         nacionalidad, salario, cargo)
         self._score = score
         self._nro_auto = nro_auto
         self._titular = True

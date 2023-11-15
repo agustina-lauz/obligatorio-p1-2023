@@ -1,15 +1,15 @@
 
 
 class Empleado:
-    def __init__(self, cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo, equipo):
+    def __init__(self, cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo):
         self._cedula = cedula
         self._nombre = nombre
         self._fecha_nacimiento = fecha_nacimiento
         self._nacionalidad = nacionalidad
         self._salario = salario
         self._cargo = cargo
-        self._equipo = equipo
-        self._score = None
+        self._equipo = None
+        self._score = 0
 
     @property
     def cedula(self):

@@ -1,19 +1,10 @@
 
 
 class Auto:
-    def __init__(self, numero, modelo, anio, score):
-        self._numero = numero
+    def __init__(self, modelo, anio, score):
         self._modelo = modelo
         self._anio = anio
         self._score = score
-
-    @property
-    def numero(self):
-        return self._numero
-
-    @numero.setter
-    def nro_auto(self, numero):
-        self._numero = numero
 
     @property
     def modelo(self):

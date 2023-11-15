@@ -8,18 +8,20 @@ from exceptions.valor_no_existe import ValorNoExiste
 class Datos:
 
     @staticmethod
+    def validar_cedula(cedula):
+        return len(cedula) == 8 and cedula.isdigit()
+
+    @staticmethod
     def set_cedula():
         try:
             cedula = input("Ingrese la cedula del empleado: ")
-            if len(cedula) == 8 and cedula.isdigit():
+
+            if Datos.validar_cedula(cedula):
                 cedula = int(cedula)
                 return cedula
             else:
-                if len(cedula) != 8:
-                    print(NoRespetaMetodoDefinido(
-                        "La cedula debe tener 8 digitos"))
-                else:
-                    raise ValueError
+                print(NoRespetaMetodoDefinido(
+                    "La cedula debe tener 8 digitos y no contener letras"))
         except ValueError:
             print(TipovalorErroneo("La cedula no debe contener letras"))
 
@@ -76,9 +78,9 @@ class Datos:
     def set_cargo():
         try:
             print(
-                "posibles cargos: \n 0. Jefe de equipo \n 1. Piloto \n 2. Mecanico")
+                "posibles cargos: \n 1. Piloto titular \n 2. Piloto de reserva \n 3. Mecanico \n 4. Jefe de equipo")
             cargo = int(input("Ingrese el cargo del empleado: "))
-            if cargo in [0, 1, 2]:
+            if cargo in [1, 2, 3, 4]:
                 return cargo
             else:
                 print(NoRespetaMetodoDefinido(
@@ -159,6 +161,31 @@ class Datos:
         except ValueError:
             print(TipovalorErroneo(
                 "El valor del titular no debe contener letras"))
+
+    @staticmethod
+    def nombre_equipo():
+        nombre_equipo = input("Ingrese el nombre del equipo: ")
+        return nombre_equipo
+
+    @staticmethod
+    def empleados_por_equipo():
+        empleados_por_equipo = []
+        for _ in range(12):
+            try:
+                cedula_empleado = int(input(
+                    "Ingrese la cedula del empleado: "))
+
+                if not cedula_empleado:
+                    print(ValorNoExiste(" No se ingreso cedula de empleado"))
+                    break
+
+                empleados_por_equipo.append(cedula_empleado)
+            except ValueError:
+                print(ValorNoExiste(
+                    "Error: Ingrese una cédula válida (número entero)."))
+                continue
+
+        return empleados_por_equipo
 
     @staticmethod
     def pilotos_lesionados():

@@ -1,11 +1,11 @@
 
 
 class Equipo:
-    def __init__(self, nombre):
+    def __init__(self, nombre, modelo_auto):
         self._nombre = nombre
+        self._modelo_auto = modelo_auto
         self._mecanicos = []
         self._jefe_equipo = None
-        self._auto = None
         self._pilotos = []
 
     @property
@@ -15,6 +15,14 @@ class Equipo:
     @nombre.setter
     def nombre(self, nombre):
         self._nombre = nombre
+
+    @property
+    def modelo_auto(self):
+        return self._modelo_auto
+
+    @modelo_auto.setter
+    def modelo_auto(self, modelo_auto):
+        self._modelo_auto = modelo_auto
 
     @property
     def mecanicos(self):
@@ -31,14 +39,6 @@ class Equipo:
     @jefe_equipo.setter
     def jefe_equipo(self, jefe_equipo):
         self._jefe_equipo = jefe_equipo
-
-    @property
-    def auto(self):
-        return self._auto
-
-    @auto.setter
-    def auto(self, auto):
-        self._auto = auto
 
     @property
     def pilotos(self):
