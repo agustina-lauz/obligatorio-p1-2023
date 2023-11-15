@@ -2,7 +2,7 @@
 # Simulación de carreras del Campeonato de F1
 Este programa esta diseñado para realizar la simulacion de carreras del campeonato de F1,
 brindando la posibilidad de crear pilotos, mecanicos, jefes de equipos y autos para lograr formar el equipo
-y asi poder correr la carrera  
+y asi poder correr la carrera.
 
 ## Requisitos:
 para ejecutar dicho programa, es nesesario tener:
