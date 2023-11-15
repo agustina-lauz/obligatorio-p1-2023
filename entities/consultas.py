@@ -1,4 +1,4 @@
-
+from exceptions.valor_no_existe import ValorNoExiste
 
 class Consultas:
 
@@ -6,28 +6,32 @@ class Consultas:
         try:
             pilotos_ordenados = sorted(
                 pilotos_en_carrera, key=lambda piloto: piloto.score_final, reverse=True)
-
-            top_diez = []
-
-            for i, piloto in enumerate(pilotos_ordenados[:10], start=1):
-                top_diez.append(
-                    f"{i}. {piloto.nombre} - {piloto.score_final} pts")
+            if len(pilotos_ordenados) < 10:
+                raise ValorNoExiste("La lista tiene menos de 10 pilotos, no esta completa para realizar la funcion")
+            else:
+                top_diez = []
+                for i, piloto in enumerate(pilotos_ordenados[:10], start=1):
+                    top_diez.append(
+                        f"{i}. {piloto.nombre} - {piloto.score_final} pts")
 
             return top_diez
 
         except ValueError:
             print(
                 "Uno o más datos ingresados son inválidos, intente nuevamente")
+            
+            #agregue la funcion para que imprima: "la lista no esta completa para realizar la funcion" 
+            #per dudo de q si hay menos pilotos igual se realize....? no entiendo la letra, No aclara
 
     def resumen_campeonato(self):
 
         try:
             resumen = []
 
-            for equipo in equipos:
-                puntaje_equipo = sum(
-                    piloto.score_final for piloto in equipo.pilotos)
-                resumen.append((equipo.nombre, puntaje_equipo))
+            # for equipo in equipos:
+            #     puntaje_equipo = sum(
+            #         piloto.score_final for piloto in equipo.pilotos)
+            #     resumen.append((equipo.nombre, puntaje_equipo))
 
             resumen_ordenado = sorted(
                 resumen, key=lambda x: x[1], reverse=True)
@@ -47,12 +51,14 @@ class Consultas:
 
             pilotos_ordenados = sorted(
                 mejores_pagos, key=lambda piloto: piloto.salario, reverse=True)
+            if len(pilotos_ordenados) < 5:
+                raise ValorNoExiste("La lista tiene menos de 5 pilotos, no esta completa para realizar la funcion")
+            else:
+                top_cinco_pilotos = pilotos_ordenados[:5]
 
-            top_cinco_pilotos = pilotos_ordenados[:5]
+                return top_cinco_pilotos
 
-            return top_cinco_pilotos
-
-        except ValueError:
+        except ValorNoExiste:
             print("Uno o más datos ingresados son inválidos, intente nuevamente")
 
     def top_tres_pilotos_mas_habilidosos(self):
@@ -62,14 +68,17 @@ class Consultas:
 
             pilotos_ordenados = sorted(
                 total_pilotos, key=lambda piloto: piloto.score, reverse=True)
+            
+            if len(pilotos_ordenados) < 3:
+                raise ValorNoExiste("La lista tiene menos de 3 pilotos, no esta completa para realizar la funcion")
+            else: 
+                top_tres = []
+                for i, piloto in enumerate(pilotos_ordenados[:3], start=1):
+                    top_tres.append((piloto.nombre, piloto.score))
 
-            top_tres = []
-            for i, piloto in enumerate(pilotos_ordenados[:3], start=1):
-                top_tres.append((piloto.nombre, piloto.score))
+                return top_tres
 
-            return top_tres
-
-        except ValueError:
+        except ValorNoExiste:
             print(
                 "Uno o más datos ingresados son inválidos, intente nuevamente")
 

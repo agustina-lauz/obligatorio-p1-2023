@@ -20,11 +20,15 @@ class Datos:
                 cedula = int(cedula)
                 return cedula
             else:
-                print(NoRespetaMetodoDefinido(
+                raise NoRespetaMetodoDefinido
+            
+        except NoRespetaMetodoDefinido:
+           print(NoRespetaMetodoDefinido(
                     "La cedula debe tener 8 digitos y no contener letras"))
-        except ValueError:
-            print(TipovalorErroneo("La cedula no debe contener letras"))
-
+           #Esta surgiendo un problema, ya que cuando ingnresas una cedula con numeros y letras
+           # el programa tira el error " La cedula debe tener 8 digitos y no contener letras" pero en vez de volver
+           #al menu, pide el nombre. Yo creo que no esta entendiendo bien la validacion de la cedula
+           
     @staticmethod
     def set_nombre():
         try:

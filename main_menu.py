@@ -59,15 +59,13 @@ class Menu:
                 try:
                     try:
                         cedula = Datos.set_cedula()
-                        # if cedula is None:
-                        #     self.inicio()
+                        if cedula is None:
+                            self.inicio()
                         if cedula in self._cedulas_empleados:
                             print(ValorYaExiste(
                                 "La cédula ingresada ya existe, intente nuevamente"))
                             raise ValorYaExiste(
                                 "La cédula ingresada ya existe, intente nuevamente")
-
-                        self._cedulas_empleados.add(cedula)
                     except ValorYaExiste:
                         self.inicio()
 
@@ -95,10 +93,12 @@ class Menu:
                         if cargo == 1:
                             piloto.titular = True
                             self._lista_de_pilotos_titulares.append(piloto)
+                            self._cedulas_empleados.add(cedula)
                             print("Piloto titular registrado correctamente")
                         else:
                             piloto.titular = False
                             self._piloto_reserva.append(piloto)
+                            self._cedulas_empleados.add(cedula)
                             print("Piloto de reserva registrado correctamente")
 
                     elif cargo == 3:
@@ -107,12 +107,14 @@ class Menu:
                             cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo)
                         mecanico.score = score
                         self._lista_de_mecanicos.append(mecanico)
+                        self._cedulas_empleados.add(cedula)
                         print("Mecanico registrado correctamente")
 
                     elif cargo == 4:
                         jefe_equipo = Empleado(
                             cedula, nombre, fecha_nacimiento, nacionalidad, salario, cargo)
                         self._jefe_equipo.append(jefe_equipo)
+                        self._cedulas_empleados.add(cedula)
                         print("Jefe de equipo registrado correctamente")
 
                 except ValorNoExiste:
@@ -154,6 +156,9 @@ class Menu:
             elif num_seleccionado == 3:
                 print("Alta de equipo")
 
+                #aca en alta de equipo esta habiendo un problema al validar las cedulas
+                #de los empleados, ya que ingresas cedulas que no estan registradas y las toma bien
+
                 try:
                     nombre_equipo = Datos.nombre_equipo()
                     modelo_auto = Datos.set_modelo()
@@ -165,6 +170,9 @@ class Menu:
                     equipo = Equipo(
                         nombre_equipo, modelo_auto)
                     empleados = Datos.empleados_por_equipo()
+                    #creo que el problema esta por aca ya que
+                    #no se esta tomando la lista de _cedulas_empleados al momento
+                    #de validar y ver que empleados se pueden agrear o no
 
                     count_pilotos_titulares = 0
                     count_pilotos_reserva = 0
@@ -238,6 +246,10 @@ class Menu:
  # COMIENZA SIMULAR CARRERA
             elif num_seleccionado == 4:
                 print("Simular carrera")
+
+                #TENEMOS QUE TENER EN CUENTA QUE SI EL USUARIO PONE ENTER O ESPACIO A ALGUA DE ESTAS LSITAS
+                # ES PORQUE EN ESA LESION/ABANDON/INFRACCION... NO HAY PILOTOS
+                #POR LO TANTO SE DEVUELVE LA LISTA VACIA
 
                 # for equipo in self._equipos:
                 #     if len(equipo.pilotos) < 3 or len(equipo.mecanicos) < 8 or equipo['jefe_equipo'] is None:
