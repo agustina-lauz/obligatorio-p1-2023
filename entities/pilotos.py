@@ -12,7 +12,7 @@ class Piloto(Empleado):
         self._cant_infracciones = 0
         self._abandono = False
         self._errores_pits = 0
-        self._score_final = 0
+        self._ptos_campeonato = 0
 
     @property
     def score(self):
