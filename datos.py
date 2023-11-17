@@ -5,11 +5,14 @@ from exceptions.no_respeta_metodo_definido import NoRespetaMetodoDefinido
 from exceptions.valor_no_existe import ValorNoExiste
 
 
+
+todas_las_cedulas = set()           #SIGUE HABIENDO PROBLEMA CON LAS CEDULAS, REGISTRO USUARIOS Y DESPUES NO ME LOSS LEEEEEEEEE
 class Datos:
 
     @staticmethod
     def validar_cedula(cedula):
         if len(str(cedula)) == 8 and cedula.isdigit():
+            todas_las_cedulas.add(cedula)
             return True
         return False
     # checked
@@ -21,9 +24,10 @@ class Datos:
 
             if Datos.validar_cedula(cedula):
                 cedula = int(cedula)
+                todas_las_cedulas.add(cedula)
                 return cedula
             else:
-                raise NoRespetaMetodoDefinido
+                raise NoRespetaMetodoDefinido("La cedula debe tener 8 digitos y no contener letras")
 
         except NoRespetaMetodoDefinido:
             print(NoRespetaMetodoDefinido(
@@ -186,18 +190,27 @@ class Datos:
     @staticmethod
     def empleados_por_equipo():
         empleados_por_equipo = []
+        
         for _ in range(12):
             try:
                 cedula_empleado = Datos.set_cedula()
-                empleados_por_equipo.append(cedula_empleado)
+
+                for cedula in todas_las_cedulas:
+                    if cedula != cedula_empleado:
+                        raise ValorNoExiste("la cedula ingresada no esta registrada")
+                    else:
+                        empleados_por_equipo.append(cedula_empleado)
 
             except NoRespetaMetodoDefinido:
-                print(
-                    "Error: La cedula debe tener 8 digitos y no contener letras.")
+                print(NoRespetaMetodoDefinido(
+                    "La cedula debe tener 8 digitos y no contener letras"))
+                break
+            except ValorNoExiste:
+                print(ValorNoExiste(
+                    f"La cédula {cedula_empleado} no se encuentra registrada en el sistema."))
                 break
 
         return empleados_por_equipo
-    # checked
 
     @staticmethod
     def pilotos_lesionados():
