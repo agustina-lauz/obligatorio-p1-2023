@@ -205,19 +205,18 @@ class Datos:
         try:
             pilotos_lesionados = []
             lesionados = input(
-                "Ingrese número de auto de todos los pilotos lesionados: ")
-            lesionados = [int(i) for i in lesionados]
-            if lesionados is not None:
-                pilotos_lesionados.extend(lesionados)
-                return pilotos_lesionados
-            elif lesionados is None:
+                "Ingrese número de auto de todos los pilotos lesionados separados por espacios. Si no existen pilotos lesionados, ingrese 0:")
+            if lesionados == "0":
                 return pilotos_lesionados
             else:
-                raise ValorNoExiste
+                lesionados = [int(i) for i in lesionados.split()
+                              if i.strip().isdigit()]
+                pilotos_lesionados.extend(lesionados)
+            return pilotos_lesionados
 
-        except ValorNoExiste:
-            print(NoRespetaMetodoDefinido(
-                "No se ingresaron pilotos lesionados."))
+        except ValueError:
+            print("Se ingresaron datos inválidos. Por favor, ingrese solo números.")
+
     # checked
 
     @staticmethod
@@ -226,15 +225,16 @@ class Datos:
         try:
             pilotos_abandonan = []
             abandonan = input(
-                "Ingrese número de auto de todos los pilotos que abandonan la carrera: ")
-            abandonan = [int(i) for i in abandonan]
-            if abandonan is not None:
-                pilotos_abandonan.extend(abandonan)
-                return pilotos_abandonan
-            elif abandonan is None:
+                "Ingrese número de auto de todos los pilotos que abandonan la carrera. Si no existen pilotos que abandonan la carrea, ingrese 0: ")
+            if abandonan == "0":
                 return pilotos_abandonan
             else:
-                raise ValorNoExiste
+                abandonan = [int(i) for i in abandonan]
+                if abandonan is not None:
+                    pilotos_abandonan.extend(abandonan)
+                    return pilotos_abandonan
+                else:
+                    raise ValorNoExiste
         except ValorNoExiste:
             print(NoRespetaMetodoDefinido(
                 "No se ingresaron pilotos que abandonan la carrera."))
@@ -246,15 +246,16 @@ class Datos:
         try:
             pilotos_infracciones = []
             infracciones = input(
-                "Ingrese número de auto de todos los pilotos que tienen infracciones. \nSi el piloto tuvo más de una infracción, ingrese el número de auto tantas veces como infracciones corresponda: ")
-            infracciones = [int(i) for i in infracciones]
-            if infracciones is not None:
-                pilotos_infracciones.extend(infracciones)
-                return pilotos_infracciones
-            elif infracciones is None:
+                "Ingrese número de auto de todos los pilotos que tienen infracciones. \nSi el piloto tuvo más de una infracción, ingrese el número de auto tantas veces como infracciones corresponda. \nSi ningun piloto tiene infracciones, ingrese 0: ")
+            if infracciones == "0":
                 return pilotos_infracciones
             else:
-                raise ValorNoExiste
+                if infracciones is not None:
+                    infracciones = [int(i) for i in infracciones]
+                    pilotos_infracciones.extend(infracciones)
+                    return pilotos_infracciones
+                else:
+                    raise ValorNoExiste
         except ValorNoExiste:
             print(ValorNoExiste(
                 "Error: Los daots ingresados no son válidos."))
@@ -266,15 +267,16 @@ class Datos:
         try:
             lista_errores_pits = []
             errores_en_pits = input(
-                "Ingrese número de auto de todos los pilotos que tienen errores en pits. \nSi el piloto tuvo más de un error en pits, ingrese el número de auto tantas veces como errores corresponda: ")
-            errores_en_pits = [int(i) for i in errores_en_pits]
-            if errores_en_pits is not None:
-                lista_errores_pits.extend(errores_en_pits)
+                "Ingrese número de auto de todos los pilotos que tienen errores en pits. \nSi el piloto tuvo más de un error en pits, ingrese el número de auto tantas veces como errores corresponda. \nSi ningun piloto tiene errores en pits, ingrese 0: ")
+            if errores_en_pits == "0":
                 return lista_errores_pits
-            elif errores_en_pits is None:
-                return errores_en_pits
             else:
-                raise ValorNoExiste
+                errores_en_pits = [int(i) for i in errores_en_pits]
+                if errores_en_pits is not None:
+                    lista_errores_pits.extend(errores_en_pits)
+                    return lista_errores_pits
+                else:
+                    raise ValorNoExiste
         except ValorNoExiste:
             print(ValorNoExiste(
                 "Error: Los datos ingresados no son válidos."))

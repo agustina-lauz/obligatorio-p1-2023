@@ -1,7 +1,7 @@
 from collections import defaultdict
 from datos import Datos
 from entities.auto import Auto
-from entities.consultas import Consultas
+# from entities.consultas import Consultas
 from entities.empleados import Empleado
 from entities.equipos import Equipo
 from entities.pilotos import Piloto
@@ -231,11 +231,11 @@ class Menu:
             elif num_seleccionado == 4:
                 print("Simular carrera")
 
-                # VALIDACIÓN DE CANTIDAD DE EMPLEADOS POR EQUIPO #
+                # # VALIDACIÓN DE CANTIDAD DE EMPLEADOS POR EQUIPO #
                 # for equipo in self._equipos:
-                #     if len(equipo.pilotos) < 3 or len(equipo.mecanicos) < 8 or equipo.jefe_equipo is None:
-                #         print(NoRespetaMetodoDefinido(
-                #             f"El equipo {equipo.nombre} no tiene un equipo completo de 12 empleados o no tiene jefe de equipo."))
+                #     if len(equipo.pilotos) != 3 or len(equipo.mecanicos) != 8 or equipo.jefe_equipo is None:
+                #         print(
+                #             f"El equipo {equipo.nombre} no tiene un equipo completo de 12 empleados o no tiene jefe de equipo.")
                 #         self.inicio()
 
                 try:
@@ -248,73 +248,87 @@ class Menu:
 
                     # REGISTRO DE PILOTOS LESIONADOS #
                     pilotos_lesionados = Datos.pilotos_lesionados()
-                    pilotos_lesionados_con_equipo = []
-                    for nro_auto in pilotos_lesionados:
-                        piloto_equipo = next(
-                            (piloto for piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
-
-                        if piloto_equipo:
-                            pilotos_lesionados_con_equipo.append(
-                                (piloto_equipo[1], piloto_equipo[0]))
-                            piloto_equipo[1].lesionado = True
-                        else:
-                            print(ValorNoExiste(
-                                f"Piloto con número de auto {nro_auto} no encontrado"))
-                            self.inicio()
-
-                    # REGISTRO DE PILOTOS QUE ABANDONAN LA CARRERA #
-                        pilotos_abandonan = Datos.pilotos_abandonan()
-                        pilotos_abandonan_con_equipo = []
-                        for nro_auto in pilotos_abandonan:
+                    if pilotos_lesionados is not None:
+                        pilotos_lesionados_con_equipo = []
+                        for nro_auto in pilotos_lesionados:
                             piloto_equipo = next(
-                                (piloto for piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
+                                (piloto for nombre_equipo, piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
 
                             if piloto_equipo:
-                                pilotos_abandonan_con_equipo.append(
+                                pilotos_lesionados_con_equipo.append(
                                     (piloto_equipo[1], piloto_equipo[0]))
-                                piloto_equipo[1].abandono = True
+                                piloto_equipo[1].lesion = True
                             else:
                                 print(ValorNoExiste(
                                     f"Piloto con número de auto {nro_auto} no encontrado"))
                                 self.inicio()
+                    else:
+                        pilotos_lesionados_con_equipo = []
+
+                    # REGISTRO DE PILOTOS QUE ABANDONAN LA CARRERA #
+                        pilotos_abandonan = Datos.pilotos_abandonan()
+                        if pilotos_abandonan is not None:
+                            pilotos_abandonan_con_equipo = []
+                            for nro_auto in pilotos_abandonan:
+                                piloto_equipo = next(
+                                    (piloto for nombre_equipo, piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
+
+                                if piloto_equipo:
+                                    piloto, nombre_equipo = piloto_equipo
+                                    pilotos_abandonan_con_equipo.append(
+                                        (piloto_equipo[1], piloto_equipo[0]))
+                                    piloto_equipo[1].abandono = True
+                                else:
+                                    print(ValorNoExiste(
+                                        f"Piloto con número de auto {nro_auto} no encontrado"))
+                                    self.inicio()
+                        else:
+                            pilotos_abandonan_con_equipo = []
 
                     # REGISTRO DE PILOTOS CON INFRACCIONES #
                     pilotos_infraccionan = Datos.pilotos_infraccionan()
-                    pilotos_infraccionan_con_equipo = []
-                    for nro_auto in pilotos_infraccionan:
-                        piloto_equipo = next(
-                            (piloto for piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
+                    if pilotos_infraccionan is not None:
+                        pilotos_infraccionan_con_equipo = []
+                        for nro_auto in pilotos_infraccionan:
 
-                        if piloto_equipo:
-                            pilotos_infraccionan_con_equipo.append(
-                                (piloto_equipo[1], piloto_equipo[0]))
-                            piloto_equipo[1].cantidad_penalidad_infringir_norma += 1
-                        else:
-                            print(ValorNoExiste(
-                                f"Piloto con número de auto {nro_auto} no encontrado"))
-                            self.inicio()
+                            piloto_equipo = next(
+                                (piloto for nombre_equipo, piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
+
+                            if piloto_equipo:
+                                pilotos_infraccionan_con_equipo.append(
+                                    (piloto_equipo[1], piloto_equipo[0]))
+                                piloto_equipo[1].cantidad_penalidad_infringir_norma += 1
+                            else:
+                                print(ValorNoExiste(
+                                    f"Piloto con número de auto {nro_auto} no encontrado"))
+                                self.inicio()
+                    else:
+                        pilotos_infraccionan_con_equipo = []
 
                     # REGISTRO PILOTOS CON ERRORES EN PITS #
                     pilotos_errores_pits = Datos.pilotos_errores_pits()
-                    pilotos_errores_pits_con_equipo = []
-                    for nro_auto in pilotos_errores_pits:
-                        piloto_equipo = next(
-                            (piloto for piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
+                    if pilotos_errores_pits is not None:
+                        pilotos_errores_pits_con_equipo = []
+                        for nro_auto in pilotos_errores_pits:
+                            piloto_equipo = next(
+                                (piloto for nombre_equipo, piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
 
-                        if piloto_equipo:
-                            pilotos_errores_pits_con_equipo.append(
-                                (piloto_equipo[1], piloto_equipo[0]))
-                            piloto_equipo[1].cantidad_errores_en_pits += 1
-                        else:
-                            print(ValorNoExiste(
-                                f"Piloto con número de auto {nro_auto} no encontrado"))
-                            self.inicio()
+                            if piloto_equipo:
+                                pilotos_errores_pits_con_equipo.append(
+                                    (piloto_equipo[1], piloto_equipo[0]))
+                                piloto_equipo[1].cantidad_errores_en_pits += 1
+                            else:
+                                print(ValorNoExiste(
+                                    f"Piloto con número de auto {nro_auto} no encontrado"))
+                                self.inicio()
+                    else:
+                        pilotos_errores_pits_con_equipo = []
 
                     # PILOTOS HABILITADOS PARA CORRER LA CARRERA #
                     pilotos_en_carrera_final = []
                     pilotos_por_equipo = defaultdict(int)
-                    for piloto, nombre_equipo in total_pilotos_equipos:
-                        if piloto.lesionado or piloto.abandono:
+                    for nombre_equipo, piloto in total_pilotos_equipos:
+                        if piloto.lesion or piloto.abandono:
                             continue
                         if pilotos_por_equipo[nombre_equipo] < 2:
                             pilotos_en_carrera_final.append(
@@ -332,7 +346,7 @@ class Menu:
                                 break
 
                         for auto in self._lista_de_autos:
-                            if piloto.nro_auto == auto.nro_auto:
+                            if nombre_equipo == equipo.nombre:
                                 autos_por_equipo = auto.score
                                 break
 
@@ -340,27 +354,27 @@ class Menu:
                             mecanico.score for mecanico in mecanicos_por_equipo)
                         score_auto = autos_por_equipo
                         score_final = score_mecanicos + score_auto + piloto.score - 5 * \
-                            piloto.cantidad_errores_en_pits - 8 * piloto.cantidad_penalidad_infringir_norma
+                            piloto.errores_pits - 8 * piloto.cant_infracciones
 
                         self._resultados_carrera.append(
-                            (nombre_equipo, piloto.nombre, score_final))
+                            (nombre_equipo, piloto, score_final))
 
                     resultados_carrera_ordenados = sorted(
-                        self._resultados_carrera, key=lambda x: x[1], reverse=True)
-                    self._resultados_carrera.append(
-                        resultados_carrera_ordenados)
+                        self._resultados_carrera, key=lambda x: x[2], reverse=True)
+                    self._resultados_carrera = resultados_carrera_ordenados
 
                     puntaje_a_asignar = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]
 
-                    for i, (nombre_equipo, nombre_piloto, score_final) in enumerate(self._resultados_carrera):
+                    for i, (nombre_equipo, piloto, score_final) in enumerate(self._resultados_carrera):
                         if i < len(puntaje_a_asignar):
                             self._resultados_carrera[i] = (
-                                nombre_equipo, nombre_piloto, score_final, puntaje_a_asignar[i])
+                                nombre_equipo, piloto, score_final, puntaje_a_asignar[i])
 
+                    # Asignar puntaje a los pilotos en la lista de equipos
                     for equipo in self._equipos:
                         for resultado in self._resultados_carrera:
-                            if resultado.nombre_piloto == equipo[4].nombre:
-                                equipo[4].ptos_campeonato = resultado.puntaje_a_asignar
+                            if resultado[1] == equipo.pilotos:
+                                equipo.pilotos.ptos_campeonato = resultado[3]
 
                 except ValueError:
                     print(
@@ -394,21 +408,21 @@ class Menu:
                         try:
                             total_pilotos = []
                             for equipo in self._equipos:
-                                for empleado in equipo.piloto:
-                                    if empleado.ptos_campeonato != 0:
-                                        total_pilotos.append(equipo.nombre,
-                                                             empleado.nombre, empleado.ptos_campeonato)
+                                for piloto in equipo.pilotos:
+                                    if piloto.ptos_campeonato != 0:
+                                        total_pilotos.append(
+                                            [equipo.nombre, piloto.nombre, piloto.ptos_campeonato])
 
-                            listado_consultas = Consultas()
-                            top_diez_pilotos = listado_consultas.top_diez_pilotos(
-                                total_pilotos)
-                            if top_diez_pilotos is None:
+                            total_pilotos = sorted(
+                                total_pilotos, key=lambda x: x[2], reverse=True)
+
+                            if not total_pilotos:
                                 print("No hay pilotos registrados en el sistema.")
                                 self.inicio()
                             else:
-                                for piloto in top_diez_pilotos:
+                                for i, piloto in enumerate(total_pilotos[:10]):
                                     print(
-                                        f"Piloto: {piloto[0]}, Score: {piloto[1]} ")
+                                        f"{i + 1}. Piloto: {piloto[1]} del equipo {piloto[0]}, Puntos: {piloto[2]}")
 
                         except ValorNoExiste:
                             print(
@@ -419,19 +433,24 @@ class Menu:
 
                         try:
 
-                            total_pilotos = []
-                            for equipo in self._equipos:
-                                for empleado in equipo.piloto:
-                                    if empleado.ptos_campeonato != 0:
-                                        total_pilotos.append(equipo.nombre,
-                                                             empleado.nombre, empleado.ptos_campeonato)
+                            total_equipos = []
 
-                            lista_consultas = Consultas()
-                            resultados_resumen = lista_consultas.resumen_campeonato(
-                                total_pilotos)
-                            for resultado in resultados_resumen:
-                                print(
-                                    f"Equipo: {resultado[0]}, Puntaje: {resultado[1]}")
+                            for equipo in self._equipos:
+                                puntaje_equipo = sum(
+                                    piloto.ptos_campeonato for piloto in equipo.pilotos)
+                                total_equipos.append(
+                                    [equipo.nombre, puntaje_equipo])
+
+                            total_equipos = sorted(
+                                total_equipos, key=lambda x: x[1], reverse=True)
+
+                            if not total_equipos:
+                                print("No hay equipos registrados en el sistema.")
+                                self.inicio()
+                            else:
+                                for i, equipo in enumerate(total_equipos[:10]):
+                                    print(
+                                        f"{i + 1}. Equipo: {equipo[0]}, Puntos: {equipo[1]}")
 
                         except ValueError:
                             print(
@@ -441,51 +460,53 @@ class Menu:
                     elif num_seleccionado == 3:
                         print("Top 5 pilotos mejores pagados: ")
 
-                        try:
+                        # try:
 
-                            total_pilotos = []
-                            for equipo in self._equipos:
-                                for empleado in equipo.piloto:
-                                    total_pilotos.append(equipo.nombre,
-                                                         empleado.nombre, empleado.salario)
+                        #     total_pilotos_salarios = []
 
-                            lista_consultas = Consultas()
-                            top_cinco_pilotos = lista_consultas.top_cinco_pilotos_mejores_pagos(
-                                total_pilotos)
-                            if top_cinco_pilotos is None:
-                                print("No hay pilotos registrados en el sistema.")
-                                self.inicio()
-                            else:
-                                for piloto in top_cinco_pilotos:
-                                    print(
-                                        f"Piloto: {piloto[0]}, Salario: {piloto[1]} ")
+                        #     for equipo in self._equipos:
+                        #         for piloto in equipo.pilotos:
+                        #             total_pilotos_salarios.append(
+                        #                 [equipo.nombre, piloto.nombre, piloto.salario])
 
-                        except ValueError:
-                            print(
-                                "Uno o más datos ingresados son inválidos, intente nuevamente")
-                            continue
+                        #     total_pilotos_salarios = sorted(
+                        #         total_pilotos_salarios, key=lambda x: x[2], reverse=True)
+
+                        #     if not total_pilotos_salarios:
+                        #         print("No hay pilotos registrados en el sistema.")
+                        #         self.inicio()
+                        #     else:
+                        #         for i, piloto_salario in enumerate(total_pilotos_salarios[:5]):
+                        #             print(
+                        #                 f"{i + 1}. Piloto: {piloto_salario[1]}, Equipo: {piloto_salario[0]}, Salario: {piloto_salario[2]}")
+
+                        # except ValueError:
+                        #     print(
+                        #         "Uno o más datos ingresados son inválidos, intente nuevamente")
+                        #     continue
 
                     elif num_seleccionado == 4:
                         print("Top 3 pilotos más habilidosos")
 
                         try:
-                            total_pilotos = []
+                            total_pilotos_habilidosos = []
                             for equipo in self._equipos:
-                                for empleado in equipo.piloto:
-                                    if empleado.ptos_campeonato != 0:
-                                        total_pilotos.append(equipo.nombre,
-                                                             empleado.nombre, empleado.score)
+                                for piloto in equipo.pilotos:
+                                    if piloto.ptos_campeonato != 0:
+                                        total_pilotos_habilidosos.append(
+                                            [equipo.nombre, piloto.nombre, piloto.score])
 
-                            listado_consultas = Consultas()
-                            top_tres_pilotos = listado_consultas.top_diez_pilotos(
-                                total_pilotos)
-                            if top_tres_pilotos is None:
+                            total_pilotos_habilidosos = sorted(
+                                total_pilotos_habilidosos, key=lambda x: x[2], reverse=True)
+
+                            if not total_pilotos_habilidosos:
                                 print("No hay pilotos registrados en el sistema.")
                                 self.inicio()
                             else:
-                                for piloto in top_tres_pilotos:
+
+                                for i, piloto_habilidoso in enumerate(total_pilotos_habilidosos[:3]):
                                     print(
-                                        f"Piloto: {piloto[0]}, Score: {piloto[1]} ")
+                                        f"{i + 1}. Piloto: {piloto_habilidoso[1]}, Equipo: {piloto_habilidoso[0]}, Score: {piloto_habilidoso[2]}")
 
                         except ValueError:
                             print(
@@ -496,20 +517,31 @@ class Menu:
                         print("Retornar jefes de equipo")
 
                         try:
-
                             total_jefes_equipo = []
-                            for equipo in self._equipos:
-                                for empleado in equipo.jefe_equipo:
-                                    if empleado.ptos_campeonato != 0:
-                                        total_jefes_equipo.append(
-                                            empleado.nombre, equipo.nombre)
 
-                            lista_consultas = Consultas()
-                            jefes_equipo = lista_consultas.retornar_jefes_equipo(
-                                total_jefes_equipo)
-                            for jefe in jefes_equipo:
+                            for equipo in self._equipos:
+                                # Verifica si el equipo tiene un jefe de equipo asignado
+                                if equipo.jefe_equipo is not None:
+                                    # Si es solo un objeto Empleado, conviértelo en una lista para que sea iterable
+                                    jefe_equipo_list = [equipo.jefe_equipo] if not isinstance(
+                                        equipo.jefe_equipo, list) else equipo.jefe_equipo
+
+                                    for jefe_equipo in jefe_equipo_list:
+                                        if jefe_equipo.pts_campeonato != 0:
+                                            total_jefes_equipo.append(
+                                                [jefe_equipo.nombre, equipo.nombre])
+
+                            total_jefes_equipo = sorted(
+                                total_jefes_equipo, key=lambda x: x[0])
+
+                            if not total_jefes_equipo:
                                 print(
-                                    f"Jefe: {jefe[0]}, Equipo: {jefe[1]} ")
+                                    "No hay jefes de equipo registrados en el sistema.")
+                                self.inicio()
+                            else:
+                                for jefe_equipo in total_jefes_equipo:
+                                    print(
+                                        f"Jefe: {jefe_equipo[0]}, Equipo: {jefe_equipo[1]}")
                         except ValueError:
                             print(
                                 "Uno o más datos ingresados son inválidos, intente nuevamente")

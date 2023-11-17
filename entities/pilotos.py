@@ -31,14 +31,6 @@ class Piloto(Empleado):
         self._nro_auto = nro_auto
 
     @property
-    def pts_campeonato(self):
-        return self._pts_campeonato
-
-    @pts_campeonato.setter
-    def pts_campeonato(self, pts_campeonato):
-        self._pts_campeonato = pts_campeonato
-
-    @property
     def titular(self):
         return self._titular
 
@@ -61,3 +53,27 @@ class Piloto(Empleado):
     @cant_infracciones.setter
     def imprevistos(self, cant_infracciones):
         self._cant_infracciones = cant_infracciones
+
+    @property
+    def abandono(self):
+        return self._abandono
+
+    @abandono.setter
+    def abandono(self, abandono):
+        self._abandono = abandono
+
+    @property
+    def errores_pits(self):
+        return self._errores_pits
+
+    @errores_pits.setter
+    def errores_pits(self, errores_pits):
+        self._errores_pits = errores_pits
+
+    @property
+    def ptos_campeonato(self):
+        return self._ptos_campeonato
+
+    @ptos_campeonato.setter
+    def ptos_campeonato(self, ptos_campeonato):
+        self._ptos_campeonato = ptos_campeonato
