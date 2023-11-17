@@ -48,3 +48,11 @@ class Equipo:
     @pilotos.setter
     def pilotos(self, pilotos):
         self._pilotos = pilotos
+
+    @property
+    def puntuacion(self):
+        return self._puntuacion
+
+    @puntuacion.setter
+    def puntuacion(self, puntuacion):
+        self._puntuacion = puntuacion

@@ -1,12 +1,10 @@
 from collections import defaultdict
 from datos import Datos
 from entities.auto import Auto
-from entities.consultas import Consultas
 from entities.empleados import Empleado
 from entities.equipos import Equipo
 from entities.pilotos import Piloto
 from exceptions.valor_ya_existe import ValorYaExiste
-# from exceptions.no_respeta_metodo_definido import NoRespetaMetodoDefinido
 from exceptions.valor_no_existe import ValorNoExiste
 
 
@@ -355,7 +353,6 @@ class Menu:
                                 score_mecanicos_equipo = 0
                                 for equipo in self._equipos:
                                     if nombre_equipo == equipo.nombre:
-                                        # Obtener la suma de los scores de los mecánicos asociados al equipo
                                         score_mecanicos_equipo = sum(
                                             mecanico.score for mecanico in equipo.mecanicos)
                                         print("Score mecánicos equipo:",
@@ -409,6 +406,11 @@ class Menu:
                                 empleado.ptos_campeonato += puntaje
                                 print("Piloto:", empleado.cedula,
                                       "Puntos campeonato:", empleado.ptos_campeonato)
+
+                    for i, (nombre_equipo, cedula_piloto, score_final, puntaje) in enumerate(self._resultados_carrera):
+                        for equipo in self._equipos:
+                            for piloto in equipo.pilotos:
+                                equipo.puntuacion += puntaje
 
                     for piloto in self._empleados_registrados:
                         piloto.abandono = False
@@ -468,19 +470,21 @@ class Menu:
 
                         try:
 
-                            total_pilotos = []
+                            puntuaciones_equipos = []
                             for equipo in self._equipos:
-                                for empleado in equipo.pilotos:
-                                    if empleado.ptos_campeonato != 0:
-                                        total_pilotos.append(equipo.nombre,
-                                                             empleado.nombre, empleado.ptos_campeonato)
 
-                            lista_consultas = Consultas()
-                            resultados_resumen = lista_consultas.resumen_campeonato(
-                                total_pilotos)
-                            for resultado in resultados_resumen:
+                                nombre_equipo = equipo.nombre
+                                puntuacion_final = equipo.puntuacion
+                                puntuaciones_equipos.append(
+                                    (nombre_equipo, puntuacion_final))
+
+                            puntuaciones_equipos = sorted(
+                                puntuaciones_equipos, key=lambda x: x[1], reverse=True)
+
+                            print("Puntuaciones de los equipos:")
+                            for i, (nombre_equipo, puntuacion_final) in enumerate(puntuaciones_equipos):
                                 print(
-                                    f"Equipo: {resultado[0]}, Puntaje: {resultado[1]}")
+                                    f"{i + 1}. Equipo: {nombre_equipo}, Puntuación Total: {puntuacion_final}")
 
                         except ValueError:
                             print(
