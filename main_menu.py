@@ -6,7 +6,7 @@ from entities.empleados import Empleado
 from entities.equipos import Equipo
 from entities.pilotos import Piloto
 from exceptions.valor_ya_existe import ValorYaExiste
-from exceptions.no_respeta_metodo_definido import NoRespetaMetodoDefinido
+# from exceptions.no_respeta_metodo_definido import NoRespetaMetodoDefinido
 from exceptions.valor_no_existe import ValorNoExiste
 
 
@@ -232,11 +232,11 @@ class Menu:
                 print("Simular carrera")
 
                 # VALIDACIÓN DE CANTIDAD DE EMPLEADOS POR EQUIPO #
-                for equipo in self._equipos:
-                    if len(equipo.pilotos) < 3 or len(equipo.mecanicos) < 8 or equipo.jefe_equipo is None:
-                        print(NoRespetaMetodoDefinido(
-                            f"El equipo {equipo.nombre} no tiene un equipo completo de 12 empleados o no tiene jefe de equipo."))
-                        self.inicio()
+                # for equipo in self._equipos:
+                #     if len(equipo.pilotos) < 3 or len(equipo.mecanicos) < 8 or equipo.jefe_equipo is None:
+                #         print(NoRespetaMetodoDefinido(
+                #             f"El equipo {equipo.nombre} no tiene un equipo completo de 12 empleados o no tiene jefe de equipo."))
+                #         self.inicio()
 
                 try:
                     # TOTAL DE PILOTOS DE TODOS LOS EQUIPOS #
@@ -249,55 +249,66 @@ class Menu:
                     # REGISTRO DE PILOTOS LESIONADOS #
                     pilotos_lesionados = Datos.pilotos_lesionados()
                     pilotos_lesionados_con_equipo = []
-                    for piloto in pilotos_lesionados:
-                        for piloto_equipo, nombre_equipo in total_pilotos_equipos:
-                            if piloto.nro_auto == piloto_equipo.nro_auto:
-                                pilotos_lesionados_con_equipo.append(
-                                    (nombre_equipo, piloto_equipo))
-                                piloto_equipo.lesionado = True
-                            else:
-                                print(ValorNoExiste("Piloto no encontrado"))
-                                self.inicio()
+                    for nro_auto in pilotos_lesionados:
+                        piloto_equipo = next(
+                            (piloto for piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
+
+                        if piloto_equipo:
+                            pilotos_lesionados_con_equipo.append(
+                                (piloto_equipo[1], piloto_equipo[0]))
+                            piloto_equipo[1].lesionado = True
+                        else:
+                            print(ValorNoExiste(
+                                f"Piloto con número de auto {nro_auto} no encontrado"))
+                            self.inicio()
 
                     # REGISTRO DE PILOTOS QUE ABANDONAN LA CARRERA #
                         pilotos_abandonan = Datos.pilotos_abandonan()
                         pilotos_abandonan_con_equipo = []
-                        for piloto in pilotos_abandonan:
-                            for piloto_equipo, nombre_equipo in total_pilotos_equipos:
-                                if piloto.nro_auto == piloto_equipo.nro_auto:
-                                    pilotos_abandonan_con_equipo.append(
-                                        (nombre_equipo, piloto_equipo))
-                                    piloto_equipo.abandono = True
-                                    break
+                        for nro_auto in pilotos_abandonan:
+                            piloto_equipo = next(
+                                (piloto for piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
+
+                            if piloto_equipo:
+                                pilotos_abandonan_con_equipo.append(
+                                    (piloto_equipo[1], piloto_equipo[0]))
+                                piloto_equipo[1].abandono = True
                             else:
-                                print(ValorNoExiste("Piloto no encontrado"))
+                                print(ValorNoExiste(
+                                    f"Piloto con número de auto {nro_auto} no encontrado"))
                                 self.inicio()
 
                     # REGISTRO DE PILOTOS CON INFRACCIONES #
                     pilotos_infraccionan = Datos.pilotos_infraccionan()
                     pilotos_infraccionan_con_equipo = []
-                    for piloto in pilotos_infraccionan:
-                        for piloto_equipo, nombre_equipo in total_pilotos_equipos:
-                            if piloto.nro_auto == piloto_equipo.nro_auto:
-                                pilotos_infraccionan_con_equipo.append(
-                                    (piloto_equipo, nombre_equipo))
-                                piloto_equipo.cantidad_penalidad_infringir_norma += 1
-                            else:
-                                print(ValorNoExiste("Piloto no encontrado"))
-                                self.inicio()
+                    for nro_auto in pilotos_infraccionan:
+                        piloto_equipo = next(
+                            (piloto for piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
+
+                        if piloto_equipo:
+                            pilotos_infraccionan_con_equipo.append(
+                                (piloto_equipo[1], piloto_equipo[0]))
+                            piloto_equipo[1].cantidad_penalidad_infringir_norma += 1
+                        else:
+                            print(ValorNoExiste(
+                                f"Piloto con número de auto {nro_auto} no encontrado"))
+                            self.inicio()
 
                     # REGISTRO PILOTOS CON ERRORES EN PITS #
                     pilotos_errores_pits = Datos.pilotos_errores_pits()
                     pilotos_errores_pits_con_equipo = []
-                    for piloto in pilotos_errores_pits:
-                        for piloto_equipo, nombre_equipo in total_pilotos_equipos:
-                            if piloto.nro_auto == piloto_equipo.nro_auto:
-                                pilotos_errores_pits_con_equipo.append(
-                                    (piloto_equipo, nombre_equipo))
-                                piloto_equipo.cantidad_errores_en_pits += 1
-                            else:
-                                print(ValorNoExiste("Piloto no encontrado"))
-                                self.inicio()
+                    for nro_auto in pilotos_errores_pits:
+                        piloto_equipo = next(
+                            (piloto for piloto in total_pilotos_equipos if piloto.nro_auto == nro_auto), None)
+
+                        if piloto_equipo:
+                            pilotos_errores_pits_con_equipo.append(
+                                (piloto_equipo[1], piloto_equipo[0]))
+                            piloto_equipo[1].cantidad_errores_en_pits += 1
+                        else:
+                            print(ValorNoExiste(
+                                f"Piloto con número de auto {nro_auto} no encontrado"))
+                            self.inicio()
 
                     # PILOTOS HABILITADOS PARA CORRER LA CARRERA #
                     pilotos_en_carrera_final = []
@@ -314,22 +325,25 @@ class Menu:
                     for piloto, nombre_equipo in pilotos_en_carrera_final:
                         mecanicos_por_equipo = []
                         autos_por_equipo = []
+
                         for equipo in self._equipos:
-                            mecanicos_por_equipo.append(
-                                nombre_equipo, equipo.mecanicos)
+                            if equipo.nombre == nombre_equipo:
+                                mecanicos_por_equipo = equipo.mecanicos
+                                break
+
                         for auto in self._lista_de_autos:
-                            if equipo.modelo_auto == auto.modelo:
-                                autos_por_equipo.append(
-                                    nombre_equipo, auto.score)
+                            if piloto.nro_auto == auto.nro_auto:
+                                autos_por_equipo = auto.score
+                                break
 
                         score_mecanicos = sum(
                             mecanico.score for mecanico in mecanicos_por_equipo)
-                        score_auto = autos_por_equipo[0].score
-                        score_final = score_mecanicos + score_auto + piloto.score_piloto - 5 * \
+                        score_auto = autos_por_equipo
+                        score_final = score_mecanicos + score_auto + piloto.score - 5 * \
                             piloto.cantidad_errores_en_pits - 8 * piloto.cantidad_penalidad_infringir_norma
 
                         self._resultados_carrera.append(
-                            nombre_equipo, piloto.nombre, score_final)
+                            (nombre_equipo, piloto.nombre, score_final))
 
                     resultados_carrera_ordenados = sorted(
                         self._resultados_carrera, key=lambda x: x[1], reverse=True)

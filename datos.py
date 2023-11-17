@@ -9,8 +9,9 @@ class Datos:
 
     @staticmethod
     def validar_cedula(cedula):
-        if len(str(cedula)) == 8:
+        if len(str(cedula)) == 8 and cedula.isdigit():
             return True
+        return False
     # checked
 
     @staticmethod
@@ -187,12 +188,9 @@ class Datos:
         empleados_por_equipo = []
         for _ in range(12):
             try:
-                cedula_empleado = int(input(
-                    "Ingrese la cedula del empleado: "))
-                if Datos.validar_cedula(cedula_empleado):
-                    empleados_por_equipo.append(cedula_empleado)
-                else:
-                    raise NoRespetaMetodoDefinido
+                cedula_empleado = Datos.set_cedula()
+                empleados_por_equipo.append(cedula_empleado)
+
             except NoRespetaMetodoDefinido:
                 print(
                     "Error: La cedula debe tener 8 digitos y no contener letras.")
