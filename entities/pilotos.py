@@ -51,7 +51,7 @@ class Piloto(Empleado):
         return self._cant_infracciones
 
     @cant_infracciones.setter
-    def imprevistos(self, cant_infracciones):
+    def cant_infracciones(self, cant_infracciones):
         self._cant_infracciones = cant_infracciones
 
     @property

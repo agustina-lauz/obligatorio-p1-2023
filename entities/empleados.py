@@ -9,7 +9,7 @@ class Empleado:
         self._salario = salario
         self._cargo = cargo
         self._score = 0
-        self._pts_campeonato = 0
+        self._ptos_campeonato = 0
 
     @property
     def cedula(self):
@@ -21,7 +21,7 @@ class Empleado:
 
     @property
     def nombre(self):
-        return self.nombre
+        return self._nombre
 
     @nombre.setter
     def nombre(self, nombre):
@@ -68,9 +68,9 @@ class Empleado:
         self._score = score
 
     @property
-    def pts_campeonato(self):
-        return self._pts_campeonato
+    def ptos_campeonato(self):
+        return self._ptos_campeonato
 
-    @pts_campeonato.setter
-    def pts_campeonato(self, pts_campeonato):
-        self._pts_campeonato = pts_campeonato
+    @ptos_campeonato.setter
+    def ptos_campeonato(self, ptos_campeonato):
+        self._ptos_campeonato = ptos_campeonato

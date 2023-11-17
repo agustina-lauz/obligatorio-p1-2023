@@ -4,37 +4,31 @@ from exceptions.tipo_valor_erroneo import TipovalorErroneo
 from exceptions.no_respeta_metodo_definido import NoRespetaMetodoDefinido
 from exceptions.valor_no_existe import ValorNoExiste
 
+todas_las_cedulas = set()
 
 
-todas_las_cedulas = set()           #SIGUE HABIENDO PROBLEMA CON LAS CEDULAS, REGISTRO USUARIOS Y DESPUES NO ME LOSS LEEEEEEEEE
 class Datos:
 
     @staticmethod
     def validar_cedula(cedula):
-        if len(str(cedula)) == 8 and cedula.isdigit():
-            todas_las_cedulas.add(cedula)
+        cedula_str = str(cedula)
+        if len(cedula_str) == 8 and cedula_str.isdigit():
             return True
         return False
     # checked
 
     @staticmethod
     def set_cedula():
-        try:
-            cedula = input("Ingrese la cedula del empleado: ")
 
-            if Datos.validar_cedula(cedula):
-                cedula = int(cedula)
-                todas_las_cedulas.add(cedula)
-                return cedula
-            else:
-                raise NoRespetaMetodoDefinido("La cedula debe tener 8 digitos y no contener letras")
+        try:
+            cedula = int(input("Ingrese la cedula del empleado: "))
+            Datos.validar_cedula(cedula)
+            return cedula
 
         except NoRespetaMetodoDefinido:
             print(NoRespetaMetodoDefinido(
                 "La cedula debe tener 8 digitos y no contener letras"))
-            # Esta surgiendo un problema, ya que cuando ingnresas una cedula con numeros y letras
-            # el programa tira el error " La cedula debe tener 8 digitos y no contener letras" pero en vez de volver
-            # al menu, pide el nombre. Yo creo que no esta entendiendo bien la validacion de la cedula
+            return None
     # checked
 
     @staticmethod
@@ -189,110 +183,105 @@ class Datos:
 
     @staticmethod
     def empleados_por_equipo():
-        empleados_por_equipo = []
-        
-        for _ in range(12):
-            try:
-                cedula_empleado = Datos.set_cedula()
 
-                for cedula in todas_las_cedulas:
-                    if cedula != cedula_empleado:
-                        raise ValorNoExiste("la cedula ingresada no esta registrada")
-                    else:
-                        empleados_por_equipo.append(cedula_empleado)
+        empleados_por_equipo = None
+        try:
+            cedula_empleado = Datos.set_cedula()
 
-            except NoRespetaMetodoDefinido:
-                print(NoRespetaMetodoDefinido(
-                    "La cedula debe tener 8 digitos y no contener letras"))
-                break
-            except ValorNoExiste:
-                print(ValorNoExiste(
-                    f"La cédula {cedula_empleado} no se encuentra registrada en el sistema."))
-                break
+            if cedula_empleado is not None:
+                empleados_por_equipo = cedula_empleado
 
-        return empleados_por_equipo
+            else:
+                raise ValorNoExiste(
+                    "La cedula ingresada no esta registrada")
+
+            return empleados_por_equipo
+
+        except ValueError:
+            print(TipovalorErroneo(
+                "La cedula no debe contener letras"))
+        # checked
 
     @staticmethod
     def pilotos_lesionados():
 
         try:
-            pilotos_lesionados = []
-            lesionados = input(
-                "Ingrese número de auto de todos los pilotos lesionados separados por espacios. Si no existen pilotos lesionados, ingrese 0:")
-            if lesionados == "0":
-                return pilotos_lesionados
+            numeros_auto_lesionados = input(
+                "Ingrese los números de auto de los pilotos lesionados separados por coma (si está vacío, presione Enter): ")
+
+            autos_con_lesiones = []
+            if numeros_auto_lesionados:
+                numeros_auto_lesionados = [
+                    int(num.strip()) for num in numeros_auto_lesionados.split(',')]
+                autos_con_lesiones.extend(numeros_auto_lesionados)
+                return autos_con_lesiones
             else:
-                lesionados = [int(i) for i in lesionados.split()
-                              if i.strip().isdigit()]
-                pilotos_lesionados.extend(lesionados)
-            return pilotos_lesionados
+                return []
 
         except ValueError:
             print("Se ingresaron datos inválidos. Por favor, ingrese solo números.")
-
+            return []
     # checked
 
     @staticmethod
     def pilotos_abandonan():
 
         try:
-            pilotos_abandonan = []
-            abandonan = input(
-                "Ingrese número de auto de todos los pilotos que abandonan la carrera. Si no existen pilotos que abandonan la carrea, ingrese 0: ")
-            if abandonan == "0":
-                return pilotos_abandonan
+            numeros_auto_abandonados = input(
+                "Ingrese los números de auto de los pilotos que abandonaron la carrera separados por coma (si está vacío, presione Enter): ")
+
+            autos_abandonados = []
+            if numeros_auto_abandonados:
+                numeros_auto_abandonados = [
+                    int(num.strip()) for num in numeros_auto_abandonados.split(',')]
+                autos_abandonados.extend(numeros_auto_abandonados)
+                return autos_abandonados
             else:
-                abandonan = [int(i) for i in abandonan]
-                if abandonan is not None:
-                    pilotos_abandonan.extend(abandonan)
-                    return pilotos_abandonan
-                else:
-                    raise ValorNoExiste
-        except ValorNoExiste:
-            print(NoRespetaMetodoDefinido(
-                "No se ingresaron pilotos que abandonan la carrera."))
+                return []
+
+        except ValueError:
+            print("Se ingresaron datos inválidos. Por favor, ingrese solo números.")
+            return []
     # checked
 
     @staticmethod
     def pilotos_infraccionan():
 
         try:
-            pilotos_infracciones = []
-            infracciones = input(
-                "Ingrese número de auto de todos los pilotos que tienen infracciones. \nSi el piloto tuvo más de una infracción, ingrese el número de auto tantas veces como infracciones corresponda. \nSi ningun piloto tiene infracciones, ingrese 0: ")
-            if infracciones == "0":
-                return pilotos_infracciones
+            numeros_auto_infracciones = input(
+                "Ingrese los números de auto de los pilotos que cometieron infracciones separados por coma (si está vacío, presione Enter): ")
+            autos_infracciones = []
+            if numeros_auto_infracciones:
+                numeros_auto_infracciones = [
+                    int(num.strip()) for num in numeros_auto_infracciones.split(',')]
+                autos_infracciones.extend(numeros_auto_infracciones)
+                return autos_infracciones
             else:
-                if infracciones is not None:
-                    infracciones = [int(i) for i in infracciones]
-                    pilotos_infracciones.extend(infracciones)
-                    return pilotos_infracciones
-                else:
-                    raise ValorNoExiste
-        except ValorNoExiste:
-            print(ValorNoExiste(
-                "Error: Los daots ingresados no son válidos."))
+                return []
+
+        except ValueError:
+            print("Se ingresaron datos inválidos. Por favor, ingrese solo números.")
+            return []
+
     # checked
 
     @staticmethod
     def pilotos_errores_pits():
 
         try:
+            numeros_auto_errores_pits = input(
+                "Ingrese los números de auto de los pilotos que cometieron errores en pits separados por coma (si está vacío, presione Enter): ")
             lista_errores_pits = []
-            errores_en_pits = input(
-                "Ingrese número de auto de todos los pilotos que tienen errores en pits. \nSi el piloto tuvo más de un error en pits, ingrese el número de auto tantas veces como errores corresponda. \nSi ningun piloto tiene errores en pits, ingrese 0: ")
-            if errores_en_pits == "0":
+            if numeros_auto_errores_pits:
+                numeros_auto_errores_pits = [
+                    int(num.strip()) for num in numeros_auto_errores_pits.split(',')]
+                lista_errores_pits.extend(numeros_auto_errores_pits)
                 return lista_errores_pits
             else:
-                errores_en_pits = [int(i) for i in errores_en_pits]
-                if errores_en_pits is not None:
-                    lista_errores_pits.extend(errores_en_pits)
-                    return lista_errores_pits
-                else:
-                    raise ValorNoExiste
-        except ValorNoExiste:
-            print(ValorNoExiste(
-                "Error: Los datos ingresados no son válidos."))
+                return []
+
+        except ValueError:
+            print("Se ingresaron datos inválidos. Por favor, ingrese solo números.")
     # checked
 
     def mecanicos_equipo(self, equipos, nombre_equipo):

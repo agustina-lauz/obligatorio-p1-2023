@@ -7,6 +7,7 @@ class Equipo:
         self._mecanicos = []
         self._jefe_equipo = None
         self._pilotos = []
+        self._puntuacion = 0
 
     @property
     def nombre(self):
