@@ -44,6 +44,52 @@ Y por dos carpetas:
 
 2. **Exeptions: ** en esta carpeta se encuentran los archivos correspondientes a los posibles errores a encontrar al ejecutar el programa ('no_respeta_metodo_definido.py', 'tipo_valor_erroneo.py', 'valor_no_existe.py', 'valor_ya_existe.py').
 
+## Modelo UML
+### Clase Empleado
+- Atributos:
+  - Cedula
+  - Nombre
+  - Fecha de nacimiento
+  - Nacionalidad
+  - Salario
+  - Cargo
+  - (Opcional) Score
+
+### Clase Piloto (Herencia de Empleado)
+- Atributos adicionales:
+  - NroAuto
+
+### Clase Equipo
+- Atributos:
+  - NombreEquipo
+  - ModeloAuto
+
+### Clase Auto
+- Atributos:
+  - Modelo
+  - Año
+  - Score
+
+### Clase Datos
+- Métodos:
+  - validar_cedula(cedula)
+  - set_cedula()
+  - set_nombre()
+  - set_fecha_nacimiento()
+  - set_nacionalidad()
+  - set_cargo()
+  - set_score()
+  - set_nro_auto()
+  - set_modelo()
+  - set_anio()
+  - set_titular()
+  - nombre_equipo()
+  - empleados_por_equipo()
+  - mecanicos_equipo(equipos, nombre_equipo)
+  - autos_por_equipo(lista_de_autos, equipos, nombre_equipo)
+### Relaciones
+- La clase Piloto hereda de la clase Empleado (Relación de herencia).
+- La clase Equipo está compuesta por 12 instancias de la clase Empleado y 1 instancia de la clase Auto (Relación de composición).
 
 ## Problemas conocidos
 Hasta ahora, el programa no cuenta con problemas conocidos.
