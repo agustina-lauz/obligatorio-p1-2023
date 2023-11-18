@@ -57,6 +57,7 @@ Y por dos carpetas:
 
 ### Clase Piloto (Herencia de Empleado)
 - Atributos adicionales:
+  - score
   - NroAuto
 
 ### Clase Equipo
