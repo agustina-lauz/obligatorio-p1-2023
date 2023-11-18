@@ -85,9 +85,14 @@ Y por dos carpetas:
   - set_anio()
   - set_titular()
   - nombre_equipo()
+  - pilotos_lesionados()
+  - pilotos_abandonan()
+  - pilotos_infraccionan()
+  - pilotos_errores_pits()
   - empleados_por_equipo()
   - mecanicos_equipo(equipos, nombre_equipo)
   - autos_por_equipo(lista_de_autos, equipos, nombre_equipo)
+
 ### Relaciones
 - La clase Piloto hereda de la clase Empleado (Relación de herencia).
 - La clase Equipo está compuesta por 12 instancias de la clase Empleado y 1 instancia de la clase Auto (Relación de composición).
